@@ -447,6 +447,10 @@ public class TextField extends TextArea {
             firstUppercaseInputMode.addElement(name);
         }
     }
+
+    boolean showLightweightVKB() {
+        return true;
+    }
     
     /**
      * @inheritDoc
