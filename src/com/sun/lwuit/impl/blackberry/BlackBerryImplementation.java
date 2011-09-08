@@ -1689,7 +1689,7 @@ public class BlackBerryImplementation extends LWUITImplementation {
         }
         //#ifdef touch
 //#         if ("User-Agent".equals(key)) {
-//#             return "Blackberry" + DeviceInfo.getDeviceName() + "/" + DeviceInfo.getPlatformVersion()
+//#             return "Blackberry" + DeviceInfo.getDeviceName() + "/" + DeviceInfo.getSoftwareVersion()
 //#                     + " Profile/" + System.getProperty("microedition.profiles")
 //#                     + " Configuration/"
 //#                     + System.getProperty("microedition.configuration")

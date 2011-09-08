@@ -187,17 +187,13 @@ class BlackBerryTouchSupport extends BlackBerryCanvas {
      * @return
      */
     public boolean isClickTouchScreen(){
-        String p = System.getProperty("microedition.platform");
-        if(p != null && p.indexOf("6.") > -1){
-            return false;
-        }
 
-        String s = DeviceInfo.getPlatformVersion();
+        String s = DeviceInfo.getSoftwareVersion();
         if(s.length() > 0){
             int v = Integer.parseInt(s.substring(0, 1));        
             return v <= 5;
         }
-        return true;
+        return false;
     }
 
     public void paint(Graphics g) {
