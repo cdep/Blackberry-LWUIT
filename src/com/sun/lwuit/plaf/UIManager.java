@@ -259,11 +259,15 @@ public class UIManager {
             themeProps.put("Button.border", Border.getDefaultBorder());
             themeProps.put("Button.padding", "4,4,4,4");
         }
+        if(installedTheme == null || !installedTheme.containsKey("Button.sel#derive")) {
+            themeProps.put("Button.sel#border", Border.getDefaultBorder());
+            themeProps.put("Button.sel#bgColor", "a0a0a0");
+        }
+        
         if(installedTheme == null || !installedTheme.containsKey("Button.press#derive")) {
             themeProps.put("Button.press#border", Border.getDefaultBorder().createPressedVersion());
             themeProps.put("Button.press#derive", "Button");
         }
-        themeProps.put("Button.sel#derive", "Button");
         themeProps.put("Button.dis#derive", "Button");
 
         if(installedTheme == null || !installedTheme.containsKey("CalendarTitle.derive")) {
