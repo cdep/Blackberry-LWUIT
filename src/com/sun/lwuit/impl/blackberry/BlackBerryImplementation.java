@@ -274,8 +274,12 @@ public class BlackBerryImplementation extends LWUITImplementation {
 
         nullFld = null;
         synchronized(UiApplication.getEventLock()) {
-            while(canvas.getFieldCount() > 0) {
-                canvas.delete(canvas.getField(0));
+            try {
+                while(canvas.getFieldCount() > 0) {
+                    canvas.delete(canvas.getField(0));
+                }
+            } catch(Throwable t) {
+                t.printStackTrace();
             }
         }
     }
@@ -294,7 +298,11 @@ public class BlackBerryImplementation extends LWUITImplementation {
             }
             lightweightEdit = null;
             nativeEdit = null;
-            canvas.delete(be);
+            try {
+                canvas.delete(be);
+            } catch(Throwable t) {
+                t.printStackTrace();
+            }
             flushGraphics();
             //#ifdef touch
 //#             BlackBerryVirtualKeyboard.blockFolding = false;
@@ -1613,7 +1621,11 @@ public class BlackBerryImplementation extends LWUITImplementation {
                     break;
 
                 case INVOKE_LATER_deinitialize:
-                    canvas.delete(fld);
+                    try {
+                        canvas.delete(fld);
+                    } catch(Throwable t) {
+                        t.printStackTrace();
+                    }
                     break;
 
                 case INVOKE_LATER_showNativeScreen:
