@@ -170,6 +170,7 @@ class HTMLInputFormat {
                     protected void showSymbolDialog() { // Block symbols dialog
                     }
                 };
+                tf.setConstraint(ta.getConstraint());
                 ta=tf;
             }
 
