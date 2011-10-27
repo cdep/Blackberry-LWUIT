@@ -260,7 +260,7 @@ public class ConnectionRequest implements IOProgressListener {
                 impl.addCookie(arr);
             }
             
-            if(responseCode != 200) {
+            if(responseCode - 200 < 0 || responseCode - 200 > 100) {
                 // redirect to new location
                 if(followRedirects && (responseCode == 301 || responseCode == 302
                         || responseCode == 303)) {
