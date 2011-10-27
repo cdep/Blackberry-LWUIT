@@ -203,11 +203,11 @@ public class BlackBerryImplementation extends LWUITImplementation {
         class LightweightEdit implements Runnable, Animation {
             public void run() {
                 long type = 0;
-                TextArea t = lightweightEdit;
-                if(t == null) {
+                TextArea lightweightEditTmp = lightweightEdit;
+                if(lightweightEditTmp == null) {
                     return;
                 }
-                int constraint = t.getConstraint();
+                int constraint = lightweightEditTmp.getConstraint();
                 if((constraint & TextArea.DECIMAL) == TextArea.DECIMAL) {
                         type = BasicEditField.FILTER_REAL_NUMERIC;
                 } else {
@@ -224,22 +224,22 @@ public class BlackBerryImplementation extends LWUITImplementation {
                     }
                 }
 
-                if(t.isSingleLineTextArea()) {
+                if(lightweightEditTmp.isSingleLineTextArea()) {
                     type |= BasicEditField.NO_NEWLINE;
                 }
 
                 if ((constraint & TextArea.PASSWORD) == TextArea.PASSWORD) {
-                    nativeEdit = new BBPasswordEditField(t, type, maxSize);
+                    nativeEdit = new BBPasswordEditField(lightweightEditTmp, type, maxSize);
                 } else {
-                    nativeEdit = new BBEditField(t, type, maxSize);
+                    nativeEdit = new BBEditField(lightweightEditTmp, type, maxSize);
                 }
                 nativeEdit.setEditable(true);
                 Font f = nativeEdit.getFont();
-                if (f.getHeight() > t.getStyle().getFont().getHeight()) {
-                    nativeEdit.setFont(f.derive(f.getStyle(), t.getStyle().getFont().getHeight()));
+                if (f.getHeight() > lightweightEditTmp.getStyle().getFont().getHeight()) {
+                    nativeEdit.setFont(f.derive(f.getStyle(), lightweightEditTmp.getStyle().getFont().getHeight()));
                 }
                 canvas.add(nativeEdit);
-                nativeEdit.setCursorPosition(t.getText().length());
+                nativeEdit.setCursorPosition(lightweightEditTmp.getText().length());
 
                 try {
                     nativeEdit.setFocus();
@@ -278,12 +278,8 @@ public class BlackBerryImplementation extends LWUITImplementation {
 
         nullFld = null;
         synchronized(UiApplication.getEventLock()) {
-            try {
-                while(canvas.getFieldCount() > 0) {
-                    canvas.delete(canvas.getField(0));
-                }
-            } catch(Throwable t) {
-                t.printStackTrace();
+            while(canvas.getFieldCount() > 0) {
+                canvas.delete(canvas.getField(0));
             }
         }
     }
@@ -302,11 +298,7 @@ public class BlackBerryImplementation extends LWUITImplementation {
             }
             lightweightEdit = null;
             nativeEdit = null;
-            try {
-                canvas.delete(be);
-            } catch(Throwable t) {
-                t.printStackTrace();
-            }
+            canvas.delete(be);
             flushGraphics();
             //#ifdef touch
 //#             BlackBerryVirtualKeyboard.blockFolding = false;
@@ -1625,11 +1617,7 @@ public class BlackBerryImplementation extends LWUITImplementation {
                     break;
 
                 case INVOKE_LATER_deinitialize:
-                    try {
-                        canvas.delete(fld);
-                    } catch(Throwable t) {
-                        t.printStackTrace();
-                    }
+                    canvas.delete(fld);
                     break;
 
                 case INVOKE_LATER_showNativeScreen:
