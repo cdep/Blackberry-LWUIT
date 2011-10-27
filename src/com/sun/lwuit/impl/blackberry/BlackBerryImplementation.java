@@ -203,7 +203,11 @@ public class BlackBerryImplementation extends LWUITImplementation {
         class LightweightEdit implements Runnable, Animation {
             public void run() {
                 long type = 0;
-                int constraint = lightweightEdit.getConstraint();
+                TextArea t = lightweightEdit;
+                if(t == null) {
+                    return;
+                }
+                int constraint = t.getConstraint();
                 if((constraint & TextArea.DECIMAL) == TextArea.DECIMAL) {
                         type = BasicEditField.FILTER_REAL_NUMERIC;
                 } else {
@@ -220,22 +224,22 @@ public class BlackBerryImplementation extends LWUITImplementation {
                     }
                 }
 
-                if(lightweightEdit.isSingleLineTextArea()) {
+                if(t.isSingleLineTextArea()) {
                     type |= BasicEditField.NO_NEWLINE;
                 }
 
                 if ((constraint & TextArea.PASSWORD) == TextArea.PASSWORD) {
-                    nativeEdit = new BBPasswordEditField(lightweightEdit, type, maxSize);
+                    nativeEdit = new BBPasswordEditField(t, type, maxSize);
                 } else {
-                    nativeEdit = new BBEditField(lightweightEdit, type, maxSize);
+                    nativeEdit = new BBEditField(t, type, maxSize);
                 }
                 nativeEdit.setEditable(true);
                 Font f = nativeEdit.getFont();
-                if (f.getHeight() > lightweightEdit.getStyle().getFont().getHeight()) {
-                    nativeEdit.setFont(f.derive(f.getStyle(), lightweightEdit.getStyle().getFont().getHeight()));
+                if (f.getHeight() > t.getStyle().getFont().getHeight()) {
+                    nativeEdit.setFont(f.derive(f.getStyle(), t.getStyle().getFont().getHeight()));
                 }
                 canvas.add(nativeEdit);
-                nativeEdit.setCursorPosition(lightweightEdit.getText().length());
+                nativeEdit.setCursorPosition(t.getText().length());
 
                 try {
                     nativeEdit.setFocus();
