@@ -71,6 +71,23 @@ public class Button extends Label {
     private boolean toggle;
     
     /** 
+     * monitor release on parent form in order to reset state when a button
+     * is pressed and the pointer is moved outside of the button area
+     * whithout ever generating a drag or release event on the button itself.
+     */
+    private final ActionListener releaseListener = new ActionListener() {
+
+        public void actionPerformed(ActionEvent evt) {
+            int x = evt.getX();
+            int y = evt.getY();
+            if (!contains(x, y)) {
+                state = STATE_DEFAULT;
+                repaint();
+            }
+        }
+    };
+
+    /** 
      * Constructs a button with an empty string for its text.
      */
     public Button() {
@@ -145,6 +162,22 @@ public class Button extends Label {
         setIcon(icon);
         this.pressedIcon = icon;
         this.rolloverIcon = icon;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected void initComponent() {
+        super.initComponent();
+        this.getComponentForm().addPointerReleasedListener(releaseListener);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected void deinitialize() {
+        this.getComponentForm().removePointerReleasedListener(releaseListener);
+        super.deinitialize();
     }
 
     /**
