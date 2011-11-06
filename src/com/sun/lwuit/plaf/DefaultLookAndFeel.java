@@ -1171,7 +1171,7 @@ public class DefaultLookAndFeel extends LookAndFeel implements FocusListener {
                         int index = 1;
                         int widest = f.charWidth('W');
                         int pointsW = f.stringWidth(points);
-                        while (fastCharWidthCheck(text, index, textSpaceW - pointsW, widest, f)){
+                        while (fastCharWidthCheck(text, index, textSpaceW - pointsW, widest, f) && index < text.length()){
                             index++;
                         }
                         text = text.substring(0, Math.max(1, index-1)) + points;
