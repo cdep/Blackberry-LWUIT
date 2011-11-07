@@ -34,6 +34,7 @@ import com.sun.lwuit.VideoComponent;
 import com.sun.lwuit.animations.Animation;
 import com.sun.lwuit.events.ActionEvent;
 import com.sun.lwuit.events.ActionListener;
+import com.sun.lwuit.events.MediaListener;
 import com.sun.lwuit.geom.Dimension;
 import com.sun.lwuit.impl.LWUITImplementation;
 import com.sun.lwuit.plaf.UIManager;
@@ -48,6 +49,7 @@ import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.media.Manager;
 import javax.microedition.media.MediaException;
 import javax.microedition.media.Player;
+import javax.microedition.media.PlayerListener;
 import javax.microedition.media.control.VideoControl;
 import javax.microedition.midlet.MIDlet;
 import net.rim.device.api.ui.Screen;
@@ -644,7 +646,8 @@ public class BlackBerryImplementation extends LWUITImplementation {
         private Player p;
         private VideoControl c;
         private boolean started;
-
+        private PlayerListener l;
+        
         RIMVideoComponent(Field f, Player p, VideoControl c) {
             super(f);
             this.p = p;
@@ -797,6 +800,36 @@ public class BlackBerryImplementation extends LWUITImplementation {
 
         public boolean isFullScreen() {
             return fullscreen;
+        }
+
+        public void close() {
+            p.close();
+        }
+
+        public void setMediaListener(final MediaListener listener) {
+            if(listener == null){
+                if(l != null){
+                    ((Player) getNativePeer()).removePlayerListener(l);
+                }
+                return;
+            }
+            l = new PlayerListener() {
+
+                public void playerUpdate(Player player, String event, Object eventData) {
+                    if (event.equals(PlayerListener.END_OF_MEDIA)) {
+                        listener.playerUpdated(MediaListener.ENDED);
+                    } else  if (event.equals(PlayerListener.STARTED)) {
+                        listener.playerUpdated(MediaListener.STARTED);                    
+                    } else  if (event.equals(PlayerListener.STOPPED)) {
+                        listener.playerUpdated(MediaListener.STOPPED);                    
+                    } else  if (event.equals(PlayerListener.CLOSED)) {
+                        listener.playerUpdated(MediaListener.CLOSED);                    
+                    } else  if (event.equals(PlayerListener.ERROR)) {
+                        listener.playerUpdated(MediaListener.ERROR);                   
+                    }
+                }
+            };
+            ((Player) getNativePeer()).addPlayerListener(l);
         }
     }
 
