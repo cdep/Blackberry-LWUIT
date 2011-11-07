@@ -23,6 +23,7 @@
  */
 package com.sun.lwuit;
 
+import com.sun.lwuit.events.MediaListener;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -50,6 +51,15 @@ public abstract class VideoComponent extends PeerComponent {
         setFocusable(false);
     }
 
+    /**
+     * @inheritDoc
+     */
+    protected void deinitialize() {
+        super.deinitialize();
+        close();
+    }
+
+    
     /**
      * Some devices might not allow extracting the native peer before the first initialization
      * 
@@ -94,6 +104,12 @@ public abstract class VideoComponent extends PeerComponent {
      * Stop media playback
      */
     public abstract void stop();
+    
+    /**
+     * Close the video player and release it's resources
+     */
+    public abstract void close();
+    
 
     /**
      * Set the number of times the media should loop
@@ -164,6 +180,12 @@ public abstract class VideoComponent extends PeerComponent {
     public abstract boolean isFullScreen();
 
     /**
+     * Sets a MediaListener for this player if listener is null the current listener is will be removed
+     * @param l a MediaListener Object
+     */
+    public abstract void setMediaListener(MediaListener l);
+
+    /**
      * Some platforms might allow invoking the native video player for this file type
      *
      * @return true if the native player can be used for this file
@@ -177,4 +199,5 @@ public abstract class VideoComponent extends PeerComponent {
      */
     public void playInNativePlayer() {
     }
+    
 }
