@@ -931,7 +931,7 @@ public class UIBuilder {
                     if(cmp instanceof TextField) {
                         int cons = ((TextArea)cmp).getConstraint();
                         if((cons & TextArea.NUMERIC) == TextArea.NUMERIC) {
-                            ((TextField)cmp).setDefaultInputModeOrder(new String[]{"123"});
+                            ((TextField)cmp).setInputModeOrder(new String[]{"123"});
                         }
                     }
                     break;
