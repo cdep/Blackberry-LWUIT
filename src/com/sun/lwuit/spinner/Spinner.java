@@ -193,10 +193,18 @@ public class Spinner extends List {
     /**
      * @inheritDoc
      */
-    protected void initComponent() {
+    protected void initComponent() {        
         getComponentForm().registerAnimated(this);
     }
 
+    /**
+     * @inheritDoc
+     */
+    protected void deinitialize() {
+        getComponentForm().deregisterAnimated(this);
+    }
+
+    
     /**
      * @inheritDoc
      */
