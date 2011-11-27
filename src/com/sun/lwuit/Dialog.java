@@ -1095,7 +1095,9 @@ public class Dialog extends Form {
         
         // hide the title if no text is there to allow the styles of the dialog title to disappear
         if((!dialogTitleCompatibilityMode) && dialogTitle != null && UIManager.getInstance().isThemeConstant("hideEmptyTitleBool", false)) {
-            dialogTitle.setVisible(dialogTitle.getText().length() > 0);
+            boolean b = dialogTitle.getText().length() > 0;
+            getTitleArea().setVisible(b);
+            getTitleComponent().setVisible(b);
         }
         super.showModal(top, bottom, left, right, includeTitle, modal, reverse);
     }
@@ -1132,7 +1134,9 @@ public class Dialog extends Form {
         // hide the title if no text is there to allow the styles of the dialog title to disappear, we need this code here since otherwise the
         // preferred size logic of the dialog won't work with large title borders
         if((!dialogTitleCompatibilityMode) && dialogTitle != null && UIManager.getInstance().isThemeConstant("hideEmptyTitleBool", false)) {
-            getTitleComponent().setVisible(getTitle().length() > 0);
+            boolean b = getTitle().length() > 0;
+            getTitleArea().setVisible(b);
+            getTitleComponent().setVisible(b);
         }
 
         // allows a text area to recalculate its preferred size if embedded within a dialog
@@ -1267,12 +1271,14 @@ public class Dialog extends Form {
             refreshTheme();
         }
         Component contentPane = super.getContentPane();
-        Label title = super.getTitleComponent();
+        Component title = super.getTitleComponent();
 
         // hide the title if no text is there to allow the styles of the dialog title to disappear, we need this code here since otherwise the
         // preferred size logic of the dialog won't work with large title borders
         if((!dialogTitleCompatibilityMode) && dialogTitle != null && UIManager.getInstance().isThemeConstant("hideEmptyTitleBool", false)) {
-            getTitleComponent().setVisible(getTitle().length() > 0);
+            boolean b = getTitle().length() > 0;
+            getTitleArea().setVisible(b);
+            getTitleComponent().setVisible(b);
         }
         
         Style contentPaneStyle = getDialogStyle();
