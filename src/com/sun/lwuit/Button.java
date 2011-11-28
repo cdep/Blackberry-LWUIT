@@ -30,6 +30,7 @@ import com.sun.lwuit.events.ActionEvent;
 import com.sun.lwuit.events.ActionListener;
 import com.sun.lwuit.plaf.Border;
 import com.sun.lwuit.plaf.UIManager;
+import java.util.Vector;
 
 
 /**
@@ -69,23 +70,6 @@ public class Button extends Label {
     private Command cmd;
 
     private boolean toggle;
-    
-    /** 
-     * monitor release on parent form in order to reset state when a button
-     * is pressed and the pointer is moved outside of the button area
-     * whithout ever generating a drag or release event on the button itself.
-     */
-    private final ActionListener releaseListener = new ActionListener() {
-
-        public void actionPerformed(ActionEvent evt) {
-            int x = evt.getX();
-            int y = evt.getY();
-            if (!contains(x, y)) {
-                state = STATE_DEFAULT;
-                repaint();
-            }
-        }
-    };
 
     /** 
      * Constructs a button with an empty string for its text.
@@ -167,22 +151,6 @@ public class Button extends Label {
     /**
      * @inheritDoc
      */
-    protected void initComponent() {
-        super.initComponent();
-        this.getComponentForm().addPointerReleasedListener(releaseListener);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected void deinitialize() {
-        this.getComponentForm().removePointerReleasedListener(releaseListener);
-        super.deinitialize();
-    }
-
-    /**
-     * @inheritDoc
-     */
     void focusGainedInternal() {
         super.focusGainedInternal();
         if(state != STATE_PRESSED) {
@@ -205,6 +173,10 @@ public class Button extends Label {
      */
     public int getState() {
         return state;
+    }
+    
+    void setState(int state) {
+        this.state = state;
     }
     
     /**
@@ -483,12 +455,28 @@ public class Button extends Label {
         clearDrag();
         setDragActivated(false);
         pressed();
+        Form f = getComponentForm();
+        // might happen when programmatically triggering press
+        if(f != null) {
+            if(f.buttonsAwatingRelease == null) {
+                f.buttonsAwatingRelease = new Vector();
+            }
+            f.buttonsAwatingRelease.addElement(this);
+        }
     }
     
     /**
      * @inheritDoc
      */
     public void pointerReleased(int x, int y) {
+        Form f = getComponentForm();
+        // might happen when programmatically triggering press
+        if(f != null) {
+            if(f.buttonsAwatingRelease != null) {
+                f.buttonsAwatingRelease.removeElement(this);
+            }
+        }
+
         // button shouldn't fire an event when a pointer is dragged into it
         if(state == STATE_PRESSED) {
             released(x, y);

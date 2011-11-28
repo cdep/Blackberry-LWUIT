@@ -71,6 +71,9 @@ public class Form extends Container {
     private Label title = new Label("", "Title");
     private MenuBar menuBar;
     private Component dragged;
+    
+    Vector buttonsAwatingRelease;
+    
     /**
      * Indicates whether lists and containers should scroll only via focus and thus "jump" when
      * moving to a larger component as was the case in older versions of LWUIT.
@@ -1954,6 +1957,13 @@ public class Form extends Container {
             } else {
                 dragged.pointerReleased(x, y);
                 dragged = null;
+            }
+        }
+        if(buttonsAwatingRelease != null) {
+            for(int iter = 0 ; iter < buttonsAwatingRelease.size() ; iter++) {
+                Button b = (Button)buttonsAwatingRelease.elementAt(iter); 
+                b.setState(Button.STATE_DEFAULT);
+                b.repaint();
             }
         }
     }
