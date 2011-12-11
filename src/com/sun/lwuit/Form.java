@@ -1965,6 +1965,7 @@ public class Form extends Container {
                 b.setState(Button.STATE_DEFAULT);
                 b.repaint();
             }
+            buttonsAwatingRelease = null;
         }
     }
 
