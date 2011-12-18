@@ -1588,10 +1588,10 @@ public class Component implements Animation, StyleListener {
     /**
      * Repaints a specific region within the component
      * 
-     * @param x boundry of the region to repaint
-     * @param y boundry of the region to repaint
-     * @param w boundry of the region to repaint
-     * @param h boundry of the region to repaint
+     * @param x boundary of the region to repaint in absolute screen coordinates not component coordinates
+     * @param y boundary of the region to repaint in absolute screen coordinates not component coordinates
+     * @param w boundary of the region to repaint
+     * @param h boundary of the region to repaint
      */
     public void repaint(int x, int y, int w, int h) {
         Rectangle rect;
