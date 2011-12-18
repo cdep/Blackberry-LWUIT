@@ -1200,7 +1200,9 @@ public class BlackBerryImplementation extends LWUITImplementation {
                         }
                     }
                 });
-                canvas.add(nullFld);
+                synchronized(UiApplication.getEventLock()) {
+                    canvas.add(nullFld);
+                }
             }
             final Field fld = (Field) nativeComponent;
             final PeerComponent peer = new PeerComponent(fld) {
