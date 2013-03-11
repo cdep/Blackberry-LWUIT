@@ -67,11 +67,11 @@ class BlackBerryCanvas extends FullScreen {
     Field eventTarget;
 
     public int getPreferredHeight() {
-        return net.rim.device.api.ui.Graphics.getScreenHeight();
+        return net.rim.device.api.system.Display.getHeight();
     }
 
     public int getPreferredWidth() {
-        return net.rim.device.api.ui.Graphics.getScreenWidth();
+        return net.rim.device.api.system.Display.getWidth();
     }
 
     protected BlackBerryCanvas(BlackBerryImplementation impl) {
@@ -119,20 +119,20 @@ class BlackBerryCanvas extends FullScreen {
             
 
             public int getPreferredHeight() {
-                return net.rim.device.api.ui.Graphics.getScreenHeight();
+                return net.rim.device.api.system.Display.getHeight();
             }
 
             public int getPreferredWidth() {
-                return net.rim.device.api.ui.Graphics.getScreenWidth();
+                return net.rim.device.api.system.Display.getWidth();
             }
         }, NO_VERTICAL_SCROLL | NO_VERTICAL_SCROLLBAR | NO_HORIZONTAL_SCROLL | NO_HORIZONTAL_SCROLLBAR);
         this.impl = impl;
 
         // the alternative undeprecated API requires a signature
-        screenWidth = net.rim.device.api.ui.Graphics.getScreenWidth();
-        screenHeight = net.rim.device.api.ui.Graphics.getScreenHeight();
+        screenWidth = net.rim.device.api.system.Display.getWidth();
+        screenHeight = net.rim.device.api.system.Display.getHeight();
         screen = new Bitmap(Bitmap.ROWWISE_16BIT_COLOR, screenWidth, screenHeight);
-        globalGraphics = new Graphics(screen);        
+        globalGraphics = Graphics.create(screen);        
     }
 
     static PeerComponent findPeer(Container c, Field f) {
@@ -166,13 +166,13 @@ class BlackBerryCanvas extends FullScreen {
     public void sublayout(int w, int h) {
         //super.sublayout(w, h);
         // the alternative undeprecated API requires a signature
-        if(net.rim.device.api.ui.Graphics.getScreenWidth() != screenWidth ||
-                net.rim.device.api.ui.Graphics.getScreenHeight() != screenHeight) {
-            screenWidth = net.rim.device.api.ui.Graphics.getScreenWidth();
-            screenHeight = net.rim.device.api.ui.Graphics.getScreenHeight();
+        if(net.rim.device.api.system.Display.getWidth() != screenWidth ||
+                net.rim.device.api.system.Display.getHeight() != screenHeight) {
+            screenWidth = net.rim.device.api.system.Display.getWidth();
+            screenHeight = net.rim.device.api.system.Display.getHeight();
             if(screenWidth > 0 && screenHeight > 0) {
                 screen = new Bitmap(screenWidth, screenHeight);
-                globalGraphics = new Graphics(screen);
+                globalGraphics = Graphics.create(screen);
                 if(impl != null) {
                     impl.sizeChanged(screenWidth, screenHeight);
                 }

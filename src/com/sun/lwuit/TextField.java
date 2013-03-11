@@ -1045,7 +1045,7 @@ public class TextField extends TextArea {
         Container symbols = new Container(new GridLayout(symbolArray.length / 5, 5));
         for(int iter = 0 ; iter < symbolArray.length ; iter++) {
             Button button = new Button(new Command("" + symbolArray[iter]));
-            button.setAlignment(CENTER);
+            button.getStyle().setAlignment(CENTER);
             symbols.addComponent(button);
         }
         return symbols;
@@ -1797,7 +1797,7 @@ public class TextField extends TextArea {
     	if(align == Component.CENTER) {
     		throw new IllegalArgumentException("CENTER alignment is not supported in TextField.");
     	} else {
-    		super.setAlignment(align);
+    		super.getStyle().setAlignment(align);
     	}
     }
 

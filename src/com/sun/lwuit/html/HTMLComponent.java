@@ -2141,7 +2141,7 @@ public class HTMLComponent extends Container implements ActionListener,AsyncDocu
         lbl.getUnselectedStyle().setTextDecoration(textDecoration);
 
         if (align!=JUSTIFY) { // Regular LWUIT labels do not support justify. We acheive justification in fixed width mode below
-            lbl.setAlignment(align);
+            lbl.getStyle().setAlignment(align);
         }
 
 
@@ -2355,7 +2355,7 @@ public class HTMLComponent extends Container implements ActionListener,AsyncDocu
                     x+=totalWidth;
 
                     //Alignment
-                    imgLabel.setAlignment(getHorizAlign(alignStr,align,false));
+                    imgLabel.getStyle().setAlignment(getHorizAlign(alignStr,align,false));
                     imgLabel.setVerticalAlignment(getVertAlign(alignStr,Component.CENTER));
 
                     if (showImages) {

@@ -938,9 +938,9 @@ public class UIBuilder {
 
                 case PROPERTY_ALIGNMENT:
                     if(cmp instanceof Label) {
-                        ((Label)cmp).setAlignment(in.readInt());
+                        ((Label)cmp).getStyle().setAlignment(in.readInt());
                     } else {
-                        ((TextArea)cmp).setAlignment(in.readInt());
+                        ((TextArea)cmp).getStyle().setAlignment(in.readInt());
                     }
                     break;
 

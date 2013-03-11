@@ -433,7 +433,7 @@ public class VirtualKeyboard extends Dialog implements VirtualKeyboardInterface{
         final Button b = btn;
         b.setUIID(uiid);
         b.setEndsWith3Points(false);
-        b.setAlignment(Component.CENTER);
+        b.getStyle().setAlignment(Component.CENTER);
         prefSize = Math.max(prefSize, b.getPreferredW());
         b.setPreferredW(prefSize);
         b.addActionListener(new ActionListener() {

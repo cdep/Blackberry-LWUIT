@@ -188,7 +188,7 @@ public class Image {
         for(int iter = 0 ; iter < rgb.length ; iter++) {
             mask[iter] = (byte)(rgb[iter] & 0xff);
         }
-        return new IndexedImage(getWidth(), getHeight(), null, mask);
+        return Image.createIndexed(getWidth(), getHeight(), null, mask);
     }
 
     /**
@@ -331,7 +331,7 @@ public class Image {
      * @param data byte data containing palette offsets to map to ARGB colors
      */
     public static Image createIndexed(int width, int height, int[] palette, byte[] data) {
-        IndexedImage i = new IndexedImage(width, height, palette, data);
+        IndexedImage i = (IndexedImage) Image.createIndexed(width, height, palette, data);
         LWUITImplementation impl = Display.getInstance().getImplementation();
         if(impl.isNativeIndexed()) {
             return new Image(impl.createNativeIndexed(i));

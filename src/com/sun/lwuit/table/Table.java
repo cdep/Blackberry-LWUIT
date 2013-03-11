@@ -389,7 +389,7 @@ public class Table extends Container {
         if(row == -1) {
             Label header = new Label((String)value);
             header.setUIID("TableHeader");
-            header.setAlignment(titleAlignment);
+            header.getStyle().setAlignment(titleAlignment);
             header.setFocusable(true);
             return header;
         }
@@ -401,7 +401,7 @@ public class Table extends Container {
         }
         Label cell = new Label("" + value);
         cell.setUIID("TableCell");
-        cell.setAlignment(cellAlignment);
+        cell.getStyle().setAlignment(cellAlignment);
         cell.setFocusable(true);
         return cell;
     }

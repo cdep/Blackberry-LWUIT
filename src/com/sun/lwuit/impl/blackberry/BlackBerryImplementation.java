@@ -172,12 +172,12 @@ public class BlackBerryImplementation extends LWUITImplementation {
 
     public int getDisplayWidth() {
         // the alternative undeprecated API requires a signature
-        return net.rim.device.api.ui.Graphics.getScreenWidth();
+        return net.rim.device.api.system.Display.getWidth();
     }
 
     public int getDisplayHeight() {
         // the alternative undeprecated API requires a signature
-        return net.rim.device.api.ui.Graphics.getScreenHeight();
+        return net.rim.device.api.system.Display.getHeight();
     }
 
     public void editString(final Component cmp, final int maxSize, final int constraint, final String text, int keyCode) {
@@ -353,7 +353,7 @@ public class BlackBerryImplementation extends LWUITImplementation {
 
     public Object createMutableImage(int width, int height, int fillColor) {
         Bitmap b = new Bitmap(width, height);
-        Graphics g = new Graphics(b);
+        Graphics g = Graphics.create(b);
         if ((fillColor & 0xff000000) != 0xff000000) {
             g.setColor(fillColor & 0xffffff);
             int oldAlpha = g.getGlobalAlpha();
@@ -839,7 +839,7 @@ public class BlackBerryImplementation extends LWUITImplementation {
     }
 
     public Object getNativeGraphics(Object image) {
-        return new Graphics((Bitmap) image);
+        return Graphics.create((Bitmap) image);
     }
 
     public boolean isAntiAliasingSupported() {

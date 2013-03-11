@@ -71,7 +71,7 @@ public class Slider extends Label {
         sliderFullSelected = UIManager.getInstance().getComponentSelectedStyle(fullUIID);
         initCustomStyle(sliderFull);
         initCustomStyle(sliderFullSelected);
-        setAlignment(CENTER);
+        getStyle().setAlignment(CENTER);
     }
 
     /**

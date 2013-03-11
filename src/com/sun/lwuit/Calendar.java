@@ -325,7 +325,7 @@ public class Calendar extends Container {
      */
     protected Button createDay() {
         Button day = new Button();
-        day.setAlignment(CENTER);
+        day.getStyle().setAlignment(CENTER);
         day.setUIID("CalendarDay");
         day.setEndsWith3Points(false);
         day.setTickerEnabled(false);

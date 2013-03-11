@@ -647,7 +647,7 @@ class CSSEngine {
                 setTextAlignmentRecursive(cont.getComponentAt(i), align);
             }
         } else if ((HTMLComponent.FIXED_WIDTH) && (cmp instanceof Label)) { // In FIXED_WIDTH mode labels are aligned by appling alignment on themselves and enlarging the label size to take the whole width of the screen
-            ((Label)cmp).setAlignment(align);
+            ((Label)cmp).getStyle().setAlignment(align);
         }
     }
 
