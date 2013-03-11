@@ -25,7 +25,6 @@ package com.sun.lwuit;
 
 import com.sun.lwuit.animations.Transition;
 import com.sun.lwuit.events.ActionEvent;
-import com.sun.lwuit.geom.Dimension;
 import com.sun.lwuit.geom.Rectangle;
 import com.sun.lwuit.layouts.BorderLayout;
 import com.sun.lwuit.layouts.FlowLayout;

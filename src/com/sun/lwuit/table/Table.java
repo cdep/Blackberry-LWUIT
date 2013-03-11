@@ -34,8 +34,6 @@ import com.sun.lwuit.TextField;
 import com.sun.lwuit.events.ActionEvent;
 import com.sun.lwuit.events.ActionListener;
 import com.sun.lwuit.events.DataChangedListener;
-import com.sun.lwuit.geom.Rectangle;
-import com.sun.lwuit.plaf.Border;
 import com.sun.lwuit.plaf.Style;
 
 /**

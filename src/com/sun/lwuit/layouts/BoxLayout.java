@@ -27,7 +27,6 @@ import com.sun.lwuit.Component;
 import com.sun.lwuit.Container;
 import com.sun.lwuit.geom.*;
 import com.sun.lwuit.plaf.Style;
-import com.sun.lwuit.plaf.UIManager;
 
 /**
  * Layout manager that places elements in a row or column according to 

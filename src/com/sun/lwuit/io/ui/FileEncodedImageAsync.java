@@ -29,7 +29,6 @@ import com.sun.lwuit.EncodedImage;
 import com.sun.lwuit.Image;
 import com.sun.lwuit.io.FileSystemStorage;
 import com.sun.lwuit.io.util.Util;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Vector;
 

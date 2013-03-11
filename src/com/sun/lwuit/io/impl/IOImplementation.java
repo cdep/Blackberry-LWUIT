@@ -31,7 +31,6 @@ import com.sun.lwuit.io.Cookie;
 import com.sun.lwuit.io.FileSystemStorage;
 import com.sun.lwuit.io.NetworkManager;
 import com.sun.lwuit.io.Storage;
-import com.sun.lwuit.util.EventDispatcher;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

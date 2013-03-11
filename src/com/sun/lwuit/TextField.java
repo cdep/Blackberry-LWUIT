@@ -30,7 +30,6 @@ import com.sun.lwuit.geom.Dimension;
 import com.sun.lwuit.geom.Rectangle;
 import com.sun.lwuit.layouts.GridLayout;
 import com.sun.lwuit.plaf.UIManager;
-import com.sun.lwuit.plaf.Style;
 import java.util.Hashtable;
 import java.util.Vector;
 

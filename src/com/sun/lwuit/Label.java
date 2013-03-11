@@ -28,7 +28,6 @@ import com.sun.lwuit.plaf.DefaultLookAndFeel;
 import com.sun.lwuit.plaf.LookAndFeel;
 import com.sun.lwuit.plaf.Style;
 import com.sun.lwuit.plaf.UIManager;
-import java.util.Hashtable;
 
 /**
  * Allows displaying labels and images with different alignment options, this class

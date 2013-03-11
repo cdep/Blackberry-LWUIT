@@ -30,8 +30,6 @@ import com.sun.lwuit.util.Resources;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.util.Vector;
 
 /**

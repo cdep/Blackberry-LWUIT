@@ -25,11 +25,9 @@ package com.sun.lwuit.html;
 
 import com.sun.lwuit.Component;
 import com.sun.lwuit.Container;
-import com.sun.lwuit.Display;
 import com.sun.lwuit.Font;
 import com.sun.lwuit.Label;
 import com.sun.lwuit.TextArea;
-import com.sun.lwuit.geom.Dimension;
 import com.sun.lwuit.layouts.BorderLayout;
 import com.sun.lwuit.layouts.FlowLayout;
 import com.sun.lwuit.plaf.Border;

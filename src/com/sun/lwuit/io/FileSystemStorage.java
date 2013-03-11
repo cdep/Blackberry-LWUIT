@@ -24,7 +24,6 @@
 
 package com.sun.lwuit.io;
 
-import com.sun.lwuit.Display;
 import com.sun.lwuit.io.impl.IOImplementation;
 import java.io.IOException;
 import java.io.InputStream;

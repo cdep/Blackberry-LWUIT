@@ -28,7 +28,6 @@ import com.sun.lwuit.Container;
 import com.sun.lwuit.Display;
 import com.sun.lwuit.geom.*;
 import com.sun.lwuit.plaf.Style;
-import com.sun.lwuit.plaf.UIManager;
 import java.util.Hashtable;
 
 /**

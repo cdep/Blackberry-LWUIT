@@ -34,7 +34,6 @@ import com.sun.lwuit.plaf.Style;
 import com.sun.lwuit.plaf.UIManager;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Vector;
 
 /**
  * A component that lets the user switch between a group of components by

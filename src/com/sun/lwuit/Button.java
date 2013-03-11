@@ -29,7 +29,6 @@ import com.sun.lwuit.geom.Dimension;
 import com.sun.lwuit.events.ActionEvent;
 import com.sun.lwuit.events.ActionListener;
 import com.sun.lwuit.plaf.Border;
-import com.sun.lwuit.plaf.Style;
 import com.sun.lwuit.plaf.UIManager;
 
 

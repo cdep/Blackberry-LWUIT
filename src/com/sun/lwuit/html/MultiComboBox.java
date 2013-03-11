@@ -23,7 +23,6 @@
  */
 package com.sun.lwuit.html;
 
-import com.sun.lwuit.ComboBox;
 import com.sun.lwuit.Component;
 import com.sun.lwuit.Display;
 import com.sun.lwuit.Graphics;

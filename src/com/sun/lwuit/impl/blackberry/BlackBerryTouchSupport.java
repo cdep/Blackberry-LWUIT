@@ -33,7 +33,6 @@ import net.rim.device.api.system.DeviceInfo;
 import net.rim.device.api.ui.Graphics;
 import net.rim.device.api.ui.Touchscreen;
 import net.rim.device.api.ui.TouchEvent;
-import net.rim.device.api.ui.VirtualKeyboard;
 
 /**
  * Implements touch functionality related code for compatibility with older BB models

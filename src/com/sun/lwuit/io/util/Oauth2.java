@@ -28,7 +28,6 @@ import com.sun.lwuit.Display;
 import com.sun.lwuit.Form;
 import com.sun.lwuit.events.ActionEvent;
 import com.sun.lwuit.events.ActionListener;
-import com.sun.lwuit.html.AsyncDocumentRequestHandler.IOCallback;
 import com.sun.lwuit.html.DocumentInfo;
 import com.sun.lwuit.html.HTMLComponent;
 import com.sun.lwuit.io.ConnectionRequest;

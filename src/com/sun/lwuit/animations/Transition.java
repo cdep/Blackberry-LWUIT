@@ -25,7 +25,6 @@ package com.sun.lwuit.animations;
 
 import com.sun.lwuit.Component;
 import com.sun.lwuit.Container;
-import com.sun.lwuit.Form;
 import com.sun.lwuit.Graphics;
 
 /**

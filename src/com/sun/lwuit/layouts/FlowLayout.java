@@ -27,7 +27,6 @@ import com.sun.lwuit.Component;
 import com.sun.lwuit.Container;
 import com.sun.lwuit.geom.Dimension;
 import com.sun.lwuit.plaf.Style;
-import com.sun.lwuit.plaf.UIManager;
 
 /**
  * Flows elements in a row so they can spill over when reaching line end

@@ -28,7 +28,6 @@ import com.sun.lwuit.events.ActionEvent;
 import com.sun.lwuit.events.ActionListener;
 import com.sun.lwuit.geom.Rectangle;
 import java.util.Enumeration;
-import java.util.Hashtable;
 
 /**
  * This class implements HTML Image maps (ones defined with the MAP and AREA tags) 

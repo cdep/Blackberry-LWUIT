@@ -25,7 +25,6 @@
 package com.sun.lwuit.io;
 
 import com.sun.lwuit.Display;
-import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;

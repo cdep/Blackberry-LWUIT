@@ -24,7 +24,6 @@
  */
 package com.sun.lwuit.impl.blackberry;
 
-import com.sun.lwuit.BrowserComponent;
 import com.sun.lwuit.Component;
 import com.sun.lwuit.Dialog;
 import com.sun.lwuit.Display;
@@ -41,7 +40,6 @@ import com.sun.lwuit.plaf.UIManager;
 import com.sun.lwuit.util.EventDispatcher;
 import com.sun.lwuit.util.Resources;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Hashtable;
@@ -54,17 +52,7 @@ import javax.microedition.media.control.VideoControl;
 import javax.microedition.midlet.MIDlet;
 import net.rim.device.api.ui.Screen;
 import net.rim.device.api.system.Application;
-import net.rim.device.api.system.ApplicationDescriptor;
 import net.rim.device.api.system.Bitmap;
-//#ifdef signed
-//# import net.rim.device.api.system.CodeModuleGroup;
-//# import net.rim.device.api.system.CodeModuleGroupManager;
-//# import net.rim.blackberry.api.phone.Phone;
-//# import net.rim.device.api.browser.field2.BrowserField;
-//# import net.rim.device.api.browser.field2.BrowserFieldListener;
-//# import net.rim.device.api.script.Scriptable;
-//#endif
-import net.rim.device.api.system.DeviceInfo;
 import net.rim.device.api.system.GPRSInfo;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FocusChangeListener;
