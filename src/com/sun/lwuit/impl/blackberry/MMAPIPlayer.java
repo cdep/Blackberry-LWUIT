@@ -33,189 +33,194 @@ import javax.microedition.media.PlayerListener;
 import javax.microedition.media.control.VolumeControl;
 
 /**
- * Simple abstraction to the player API in MMAPI used by the MIDP and Blackberry ports.
- * This class is public only because the blackberry port relies on it and is in a different
- * package, it is not meant for genral use and is an implementation detail subject to change!
- *
- * @deprecated this class might be changed at any moment it is an implementation detail
+ * Simple abstraction to the player API in MMAPI used by the MIDP and Blackberry
+ * ports. This class is public only because the blackberry port relies on it and
+ * is in a different package, it is not meant for genral use and is an
+ * implementation detail subject to change!
+ * 
+ * @deprecated this class might be changed at any moment it is an implementation
+ *             detail
  * @author Shai Almog
  */
 public class MMAPIPlayer implements PlayerListener {
-    private static int volume;
-    private boolean deleted;
-    private int lastTime;
-    private Player p;
-    private static Vector playing;
-    private InputStream sourceStream;
-    private Runnable onComplete;
+	private static int volume;
+	private boolean deleted;
+	private int lastTime;
+	private Player p;
+	private static Vector playing;
+	private InputStream sourceStream;
+	private Runnable onComplete;
 
-    private MMAPIPlayer(Player p) {
-        this.p = p;
-    }
+	private MMAPIPlayer(Player p) {
+		this.p = p;
+	}
 
-    public static int getVolume() {
-        if(volume > -1) {
-            return volume;
-        }
-        synchronized(MMAPIPlayer.class) {
-            if(playing != null && playing.size() > 0) {
-                MMAPIPlayer current = (MMAPIPlayer)playing.elementAt(0);
-                VolumeControl volc = (VolumeControl) current.p.getControl("VolumeControl");
-                if(volc != null) {
-                    return volc.getLevel();
-                }
-            }
-        }
-        return -1;
-    }
+	public static int getVolume() {
+		if (volume > -1) {
+			return volume;
+		}
+		synchronized (MMAPIPlayer.class) {
+			if (playing != null && playing.size() > 0) {
+				MMAPIPlayer current = (MMAPIPlayer) playing.elementAt(0);
+				VolumeControl volc = (VolumeControl) current.p.getControl("VolumeControl");
+				if (volc != null) {
+					return volc.getLevel();
+				}
+			}
+		}
+		return -1;
+	}
 
-    public static void setVolume(int v) {
-        volume = v;
-        if(playing != null) {
-            synchronized(MMAPIPlayer.class) {
-                for(int iter = 0 ; iter < playing.size() ; iter++) {
-                    MMAPIPlayer current = (MMAPIPlayer)playing.elementAt(iter);
-                    VolumeControl volc = (VolumeControl) current.p.getControl("VolumeControl");
-                    if(volc != null) {
-                        volc.setLevel(v);
-                    }
-                }
-            }
-        }
-    }
+	public static void setVolume(int v) {
+		volume = v;
+		if (playing != null) {
+			synchronized (MMAPIPlayer.class) {
+				for (int iter = 0; iter < playing.size(); iter++) {
+					MMAPIPlayer current = (MMAPIPlayer) playing.elementAt(iter);
+					VolumeControl volc = (VolumeControl) current.p.getControl("VolumeControl");
+					if (volc != null) {
+						volc.setLevel(v);
+					}
+				}
+			}
+		}
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public static MMAPIPlayer createAudio(String uri, Runnable onCompletion) throws IOException {
-        try {
-            Player p = Manager.createPlayer((String)uri);
-            p.realize();
-            MMAPIPlayer m = new MMAPIPlayer(p);
-            m.bindPlayerCleanupOnComplete(p, null, onCompletion);
-            return m;
-        } catch (MediaException ex) {
-            ex.printStackTrace();
-            throw new IOException(ex.toString());
-        }
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public static MMAPIPlayer createAudio(String uri, Runnable onCompletion) throws IOException {
+		try {
+			Player p = Manager.createPlayer((String) uri);
+			p.realize();
+			MMAPIPlayer m = new MMAPIPlayer(p);
+			m.bindPlayerCleanupOnComplete(p, null, onCompletion);
+			return m;
+		} catch (MediaException ex) {
+			ex.printStackTrace();
+			throw new IOException(ex.toString());
+		}
+	}
 
-    private void bindPlayerCleanupOnComplete(final Player p, final InputStream i, final Runnable onComplete) {
-        if(volume > -1) {
-            VolumeControl v = (VolumeControl) p.getControl("VolumeControl");
-            if(v != null) {
-                v.setLevel(volume);
-            }
-        }
-        sourceStream = i;
-        this.onComplete = onComplete;
-        p.addPlayerListener(this);
-    }
+	private void bindPlayerCleanupOnComplete(final Player p, final InputStream i, final Runnable onComplete) {
+		if (volume > -1) {
+			VolumeControl v = (VolumeControl) p.getControl("VolumeControl");
+			if (v != null) {
+				v.setLevel(volume);
+			}
+		}
+		sourceStream = i;
+		this.onComplete = onComplete;
+		p.addPlayerListener(this);
+	}
 
-    public static MMAPIPlayer createAudio(InputStream stream, String mimeType, Runnable onCompletion) throws IOException {
-        try {
-            Player p = Manager.createPlayer(stream, mimeType);
-            p.realize();
-            MMAPIPlayer m = new MMAPIPlayer(p);
-            m.bindPlayerCleanupOnComplete(p, stream, onCompletion);
-            return m;
-        } catch (MediaException ex) {
-            if("audio/mpeg".equals(mimeType)) {
-                return createAudio(stream, "audio/mp3", onCompletion);
-            }
+	public static MMAPIPlayer createAudio(InputStream stream, String mimeType, Runnable onCompletion) throws IOException {
+		try {
+			Player p = Manager.createPlayer(stream, mimeType);
+			p.realize();
+			MMAPIPlayer m = new MMAPIPlayer(p);
+			m.bindPlayerCleanupOnComplete(p, stream, onCompletion);
+			return m;
+		} catch (MediaException ex) {
+			if ("audio/mpeg".equals(mimeType)) {
+				return createAudio(stream, "audio/mp3", onCompletion);
+			}
 
-            ex.printStackTrace();
-            throw new IOException(ex.toString());
-        }
-    }
+			ex.printStackTrace();
+			throw new IOException(ex.toString());
+		}
+	}
 
-    public void cleanupAudio() {
-        if(deleted) {
-            return;
-        }
-        deleted = true;
-        try {
-            synchronized(MMAPIPlayer.class) {
-                playing.removeElement(this);
-            }
-            try {
-                p.stop();
-            } catch(Throwable t) {}
-            p.close();
-            p = null;
-        } catch(Throwable t) {}
-    }
+	public void cleanupAudio() {
+		if (deleted) {
+			return;
+		}
+		deleted = true;
+		try {
+			synchronized (MMAPIPlayer.class) {
+				playing.removeElement(this);
+			}
+			try {
+				p.stop();
+			} catch (Throwable t) {
+			}
+			p.close();
+			p = null;
+		} catch (Throwable t) {
+		}
+	}
 
-    public void playAudio() {
-        try {
-            if(playing == null) {
-                playing = new Vector();
-            }
-            synchronized(MMAPIPlayer.class) {
-                playing.addElement(this);
-            }
-            p.start();
-        } catch (MediaException ex) {
-            ex.printStackTrace();
-            throw new RuntimeException(ex.toString());
-        }
-    }
+	public void playAudio() {
+		try {
+			if (playing == null) {
+				playing = new Vector();
+			}
+			synchronized (MMAPIPlayer.class) {
+				playing.addElement(this);
+			}
+			p.start();
+		} catch (MediaException ex) {
+			ex.printStackTrace();
+			throw new RuntimeException(ex.toString());
+		}
+	}
 
-    public void pauseAudio() {
-        try {
-            if(p != null) {
-                p.stop();
-            }
-        } catch (MediaException ex) {
-            ex.printStackTrace();
-            throw new RuntimeException(ex.toString());
-        }
-    }
+	public void pauseAudio() {
+		try {
+			if (p != null) {
+				p.stop();
+			}
+		} catch (MediaException ex) {
+			ex.printStackTrace();
+			throw new RuntimeException(ex.toString());
+		}
+	}
 
-    public int getAudioTime() {
-        try {
-            // this allows us to get the time even on a closed player
-            if(p == null) {
-                return lastTime;
-            }
-            lastTime = (int)(p.getMediaTime() / 1000);
-            return lastTime;
-        } catch(Throwable t) {
-            return lastTime;
-        }
-    }
+	public int getAudioTime() {
+		try {
+			// this allows us to get the time even on a closed player
+			if (p == null) {
+				return lastTime;
+			}
+			lastTime = (int) (p.getMediaTime() / 1000);
+			return lastTime;
+		} catch (Throwable t) {
+			return lastTime;
+		}
+	}
 
-    public void setAudioTime(int time) {
-        try {
-            p.setMediaTime(time * 1000);
-        } catch (MediaException ex) {
-            ex.printStackTrace();
-        }
-    }
+	public void setAudioTime(int time) {
+		try {
+			p.setMediaTime(time * 1000);
+		} catch (MediaException ex) {
+			ex.printStackTrace();
+		}
+	}
 
-    public int getAudioDuration() {
-        if(p == null) {
-            return 1000;
-        }
-        return (int)(p.getDuration() / 1000);
-    }
+	public int getAudioDuration() {
+		if (p == null) {
+			return 1000;
+		}
+		return (int) (p.getDuration() / 1000);
+	}
 
-    public void playerUpdate(Player player, String event, Object eventData) {
-        if(deleted) {
-            return;
-        }
-        if(PlayerListener.END_OF_MEDIA.equals(event) || PlayerListener.ERROR.equals(event) ||
-                PlayerListener.RECORD_ERROR.equals(event)) {
-            lastTime = (int)(p.getMediaTime() / 1000);
-            cleanupAudio();
-            if(sourceStream != null) {
-                try {
-                    sourceStream.close();
-                } catch(Throwable t) {}
-            }
-            if(onComplete != null) {
-                onComplete.run();
-            }
-        }
-    }
+	public void playerUpdate(Player player, String event, Object eventData) {
+		if (deleted) {
+			return;
+		}
+		if (PlayerListener.END_OF_MEDIA.equals(event) || PlayerListener.ERROR.equals(event) ||
+				PlayerListener.RECORD_ERROR.equals(event)) {
+			lastTime = (int) (p.getMediaTime() / 1000);
+			cleanupAudio();
+			if (sourceStream != null) {
+				try {
+					sourceStream.close();
+				} catch (Throwable t) {
+				}
+			}
+			if (onComplete != null) {
+				onComplete.run();
+			}
+		}
+	}
 }

@@ -28,100 +28,105 @@ import com.sun.lwuit.util.EventDispatcher;
 
 /**
  * A default implementation of the table model based on a two dimensional array.
- *
+ * 
  * @author Shai Almog
  */
 public class DefaultTableModel implements TableModel {
-    Object[][] data;
-    String[] columnNames;
-    private EventDispatcher dispatcher = new EventDispatcher();
-    private boolean editable;
+	Object[][] data;
+	String[] columnNames;
+	private EventDispatcher dispatcher = new EventDispatcher();
+	private boolean editable;
 
-    /**
-     * Constructs a new table with a 2 dimensional array for row/column data
-     *
-     * @param columnNames the names of the columns
-     * @param data the data within the table
-     */
-    public DefaultTableModel(String[] columnNames, Object[][] data) {
-        this(columnNames, data, false);
-    }
+	/**
+	 * Constructs a new table with a 2 dimensional array for row/column data
+	 * 
+	 * @param columnNames
+	 *            the names of the columns
+	 * @param data
+	 *            the data within the table
+	 */
+	public DefaultTableModel(String[] columnNames, Object[][] data) {
+		this(columnNames, data, false);
+	}
 
-    /**
-     * Constructs a new table with a 2 dimensional array for row/column data
-     *
-     * @param columnNames the names of the columns
-     * @param data the data within the table
-     * @param editable indicates whether table cells are editable or not by default
-     * @see #isCellEditable(int, int) 
-     */
-    public DefaultTableModel(String[] columnNames, Object[][] data, boolean editable) {
-        this.data = data;
-        this.columnNames = columnNames;
-        this.editable = editable;
-    }
+	/**
+	 * Constructs a new table with a 2 dimensional array for row/column data
+	 * 
+	 * @param columnNames
+	 *            the names of the columns
+	 * @param data
+	 *            the data within the table
+	 * @param editable
+	 *            indicates whether table cells are editable or not by default
+	 * @see #isCellEditable(int, int)
+	 */
+	public DefaultTableModel(String[] columnNames, Object[][] data, boolean editable) {
+		this.data = data;
+		this.columnNames = columnNames;
+		this.editable = editable;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public int getRowCount() {
-        return data.length;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public int getRowCount() {
+		return data.length;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public int getColumnCount() {
-        return columnNames.length;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public int getColumnCount() {
+		return columnNames.length;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public String getColumnName(int i) {
-        return columnNames[i];
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public String getColumnName(int i) {
+		return columnNames[i];
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public boolean isCellEditable(int row, int column) {
-        return editable;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public boolean isCellEditable(int row, int column) {
+		return editable;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public Object getValueAt(int row, int column) {
-        try {
-            return data[row][column];
-        } catch(ArrayIndexOutOfBoundsException err) {
-            // not the best situation but quite useful for the resource editor
-            //err.printStackTrace();
-            return "";
-        }
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public Object getValueAt(int row, int column) {
+		try {
+			return data[row][column];
+		} catch (ArrayIndexOutOfBoundsException err) {
+			// not the best situation but quite useful for the resource editor
+			// err.printStackTrace();
+			return "";
+		}
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void setValueAt(int row, int column, Object o) {
-        data[row][column] = o;
-        dispatcher.fireDataChangeEvent(column, row);
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void setValueAt(int row, int column, Object o) {
+		data[row][column] = o;
+		dispatcher.fireDataChangeEvent(column, row);
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void addDataChangeListener(DataChangedListener d) {
-        dispatcher.addListener(d);
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void addDataChangeListener(DataChangedListener d) {
+		dispatcher.addListener(d);
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void removeDataChangeListener(DataChangedListener d) {
-        dispatcher.removeListener(d);
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void removeDataChangeListener(DataChangedListener d) {
+		dispatcher.removeListener(d);
+	}
 
 }

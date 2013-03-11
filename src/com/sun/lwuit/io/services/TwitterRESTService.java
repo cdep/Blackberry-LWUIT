@@ -32,50 +32,55 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
- * Calls to the Twitter REST API can be performed via this class although currently
- * support for authentication isn't implemented due to the transition to oAuth instead
- * of basic authentication.
- *
+ * Calls to the Twitter REST API can be performed via this class although
+ * currently support for authentication isn't implemented due to the transition
+ * to oAuth instead of basic authentication.
+ * 
  * @author Shai Almog
  */
 public class TwitterRESTService extends ConnectionRequest {
-    /**
-     * The constructor accepts the method to invoke
-     *
-     * @param method the api method to invoke e.g. "statuses/public_timeline"
-     */
-    public TwitterRESTService(String method) {
-        this(method, "1", false);
-    }
+	/**
+	 * The constructor accepts the method to invoke
+	 * 
+	 * @param method
+	 *            the api method to invoke e.g. "statuses/public_timeline"
+	 */
+	public TwitterRESTService(String method) {
+		this(method, "1", false);
+	}
 
-    /**
-     * The constructor accepts the method to invoke
-     *
-     * @param method the api method to invoke e.g. "statuses/public_timeline"
-     * @param post true for post requests and false for get request
-     */
-    public TwitterRESTService(String method, boolean post) {
-        this(method, "1", post);
-    }
+	/**
+	 * The constructor accepts the method to invoke
+	 * 
+	 * @param method
+	 *            the api method to invoke e.g. "statuses/public_timeline"
+	 * @param post
+	 *            true for post requests and false for get request
+	 */
+	public TwitterRESTService(String method, boolean post) {
+		this(method, "1", post);
+	}
 
-    /**
-     * The constructor accepts the method to invoke
-     *
-     * @param method the api method to invoke e.g. "statuses/public_timeline"
-     * @param version the API version to send e.g. "1"
-     * @param post true for post requests and false for get request
-     */
-    public TwitterRESTService(String method, String version, boolean post) {
-        setPost(post);
-        setUrl("http://api.twitter.com/" + version + "/" + method + ".json");
-    }
+	/**
+	 * The constructor accepts the method to invoke
+	 * 
+	 * @param method
+	 *            the api method to invoke e.g. "statuses/public_timeline"
+	 * @param version
+	 *            the API version to send e.g. "1"
+	 * @param post
+	 *            true for post requests and false for get request
+	 */
+	public TwitterRESTService(String method, String version, boolean post) {
+		setPost(post);
+		setUrl("http://api.twitter.com/" + version + "/" + method + ".json");
+	}
 
-
-    /**
-     * @inheritDoc
-     */
-    protected void readResponse(InputStream input) throws IOException  {
-        InputStreamReader i = new InputStreamReader(input, "UTF-8");
-        fireResponseListener(new NetworkEvent(this, new JSONParser().parse(i)));
-    }
+	/**
+	 * @inheritDoc
+	 */
+	protected void readResponse(InputStream input) throws IOException {
+		InputStreamReader i = new InputStreamReader(input, "UTF-8");
+		fireResponseListener(new NetworkEvent(this, new JSONParser().parse(i)));
+	}
 }

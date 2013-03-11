@@ -24,32 +24,33 @@
 package com.sun.lwuit.html;
 
 /**
- * A simple class used to hold both a display text and an actual value for a combobox item.
- * The renderer takes the display text, while the form submission process takes the value.
- *
+ * A simple class used to hold both a display text and an actual value for a
+ * combobox item. The renderer takes the display text, while the form submission
+ * process takes the value.
+ * 
  * @author Ofir Leitner
  */
 class OptionItem {
 
-    String text;
-    String value;
+	String text;
+	String value;
 
-    OptionItem(String text,String value) {
-        this.text=text;
-        if (value==null) { // If no value was specified, the value is the display text
-            this.value=text;
-        } else {
-            this.value=value;
-        }
-    }
+	OptionItem(String text, String value) {
+		this.text = text;
+		if (value == null) { // If no value was specified, the value is the
+								// display text
+			this.value = text;
+		} else {
+			this.value = value;
+		}
+	}
 
-    String getValue() {
-        return value;
-    }
+	String getValue() {
+		return value;
+	}
 
-    public String toString() {
-        return text;
-    }
+	public String toString() {
+		return text;
+	}
 
 }
-

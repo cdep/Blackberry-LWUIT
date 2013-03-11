@@ -28,28 +28,28 @@ import java.util.Hashtable;
 
 /**
  * This class holds the data of the image maps.
- *
+ * 
  * @author Ofir Leitner
  */
 class ImageMapData {
 
-    Hashtable areas;
-    String name;
-    String defaultLink;
+	Hashtable areas;
+	String name;
+	String defaultLink;
 
-    ImageMapData(String name) {
-        this.name=name;
-    }
+	ImageMapData(String name) {
+		this.name = name;
+	}
 
-    void setDefaultLink(String link) {
-        defaultLink=link;
-    }
+	void setDefaultLink(String link) {
+		defaultLink = link;
+	}
 
-    void addRectArea(Rectangle rect,String link) {
-        if (areas==null) {
-            areas=new Hashtable();
-        }
-        areas.put(rect, link);
-    }
+	void addRectArea(Rectangle rect, String link) {
+		if (areas == null) {
+			areas = new Hashtable();
+		}
+		areas.put(rect, link);
+	}
 
 }

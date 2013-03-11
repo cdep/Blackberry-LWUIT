@@ -34,124 +34,124 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 /**
- * Implementation of the HTML components document request handler to allow simple
- * HTML support in LWUIT. This brings with it the advantages of LWUIT4IO such as
- * buffering, caching, cookies etc.
- *
+ * Implementation of the HTML components document request handler to allow
+ * simple HTML support in LWUIT. This brings with it the advantages of LWUIT4IO
+ * such as buffering, caching, cookies etc.
+ * 
  * @author Shai Almog
  */
 public class AsyncDocumentRequestHandlerImpl extends DefaultDocumentRequestHandler {
-    protected static final Object LOCK = new Object();
-    
-    /**
-     * @inheritDoc
-     */
-    public void resourceRequestedAsync(final DocumentInfo docInfo, final IOCallback callback) {
-        String url = docInfo.getUrl();
-        if(url.startsWith("jar://") || url.startsWith("res://") || url.startsWith("local://")) {
-            super.resourceRequestedAsync(docInfo, callback);
-            return;
-        }
-        visitingURL(url);
-        resourceRequested(docInfo, callback);
-    }
+	protected static final Object LOCK = new Object();
 
-    /**
-     * @inheritDoc
-     */
-    public InputStream resourceRequested(DocumentInfo docInfo) {
-        return null; 
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void resourceRequestedAsync(final DocumentInfo docInfo, final IOCallback callback) {
+		String url = docInfo.getUrl();
+		if (url.startsWith("jar://") || url.startsWith("res://") || url.startsWith("local://")) {
+			super.resourceRequestedAsync(docInfo, callback);
+			return;
+		}
+		visitingURL(url);
+		resourceRequested(docInfo, callback);
+	}
 
-    private InputStream resourceRequested(final DocumentInfo docInfo, final IOCallback callback) {
-        try {
-            if(docInfo.getUrl().startsWith("file://")) {
-                String url = docInfo.getUrl();
+	/**
+	 * @inheritDoc
+	 */
+	public InputStream resourceRequested(DocumentInfo docInfo) {
+		return null;
+	}
 
-                // trim anchors
-                int hash = url.indexOf('#');
-                if (hash!=-1) {
-                   url = url.substring(0,hash);
-                }
-                callback.streamReady(FileSystemStorage.getInstance().openInputStream(url), docInfo);
-                return null;
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        final Object[] response = new Object[1];
-        
-        ConnectionRequest reqest = createConnectionRequest(docInfo, callback, response);
-        reqest.setPost(docInfo.isPostRequest());
-        if(docInfo.isPostRequest()) {
-            reqest.setUrl(docInfo.getUrl());
-            reqest.setWriteRequest(true);
-        } else {
-            reqest.setUrl(docInfo.getFullUrl());
-        }
+	private InputStream resourceRequested(final DocumentInfo docInfo, final IOCallback callback) {
+		try {
+			if (docInfo.getUrl().startsWith("file://")) {
+				String url = docInfo.getUrl();
 
-        NetworkManager.getInstance().addToQueue(reqest);
+				// trim anchors
+				int hash = url.indexOf('#');
+				if (hash != -1) {
+					url = url.substring(0, hash);
+				}
+				callback.streamReady(FileSystemStorage.getInstance().openInputStream(url), docInfo);
+				return null;
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		final Object[] response = new Object[1];
 
-        if(callback == null) {
-            synchronized(LOCK) {
-                while(response[0] == null) {
-                    try {
-                        LOCK.wait(50);
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-                if(response[0] instanceof InputStream) {
-                    return (InputStream)response[0];
-                }
-                
-                // we need a better way to handle this...
-                if(response[0] instanceof Throwable) {
-                    ((Throwable)response[0]).printStackTrace();
-                }
-            }
-        }
+		ConnectionRequest reqest = createConnectionRequest(docInfo, callback, response);
+		reqest.setPost(docInfo.isPostRequest());
+		if (docInfo.isPostRequest()) {
+			reqest.setUrl(docInfo.getUrl());
+			reqest.setWriteRequest(true);
+		} else {
+			reqest.setUrl(docInfo.getFullUrl());
+		}
 
-        return null;
-    }
+		NetworkManager.getInstance().addToQueue(reqest);
 
-    protected ConnectionRequest createConnectionRequest(final DocumentInfo docInfo,
-            final IOCallback callback, final Object[] response){
-        return new ConnectionRequest() {
+		if (callback == null) {
+			synchronized (LOCK) {
+				while (response[0] == null) {
+					try {
+						LOCK.wait(50);
+					} catch (InterruptedException ex) {
+						ex.printStackTrace();
+					}
+				}
+				if (response[0] instanceof InputStream) {
+					return (InputStream) response[0];
+				}
 
-            protected void buildRequestBody(OutputStream os) throws IOException {
-                if(isPost()) {
-                    if(docInfo.getParams() != null){
-                        OutputStreamWriter w = new OutputStreamWriter(os, docInfo.getEncoding());
-                        w.write(docInfo.getParams());
-                    }
-                }
-            }
+				// we need a better way to handle this...
+				if (response[0] instanceof Throwable) {
+					((Throwable) response[0]).printStackTrace();
+				}
+			}
+		}
 
-            protected void handleIOException(IOException err) {
-                if(callback == null) {
-                    response[0] = err;
-                }
-                super.handleIOException(err);
-            }
+		return null;
+	}
 
-            protected boolean shouldAutoCloseResponse() {
-                return callback != null;
-            }
+	protected ConnectionRequest createConnectionRequest(final DocumentInfo docInfo,
+			final IOCallback callback, final Object[] response) {
+		return new ConnectionRequest() {
 
-            protected void readResponse(InputStream input) throws IOException  {
-                if(callback != null) {
-                    callback.streamReady(input, docInfo);
-                } else {
-                    response[0] = input;
-                    synchronized(LOCK) {
-                        LOCK.notify();
-                    }
-                }
-            }
+			protected void buildRequestBody(OutputStream os) throws IOException {
+				if (isPost()) {
+					if (docInfo.getParams() != null) {
+						OutputStreamWriter w = new OutputStreamWriter(os, docInfo.getEncoding());
+						w.write(docInfo.getParams());
+					}
+				}
+			}
 
-        };
+			protected void handleIOException(IOException err) {
+				if (callback == null) {
+					response[0] = err;
+				}
+				super.handleIOException(err);
+			}
 
-    }
+			protected boolean shouldAutoCloseResponse() {
+				return callback != null;
+			}
+
+			protected void readResponse(InputStream input) throws IOException {
+				if (callback != null) {
+					callback.streamReady(input, docInfo);
+				} else {
+					response[0] = input;
+					synchronized (LOCK) {
+						LOCK.notify();
+					}
+				}
+			}
+
+		};
+
+	}
 
 }

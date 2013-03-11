@@ -30,44 +30,43 @@ import com.sun.lwuit.geom.Rectangle;
 import java.util.Enumeration;
 
 /**
- * This class implements HTML Image maps (ones defined with the MAP and AREA tags) 
+ * This class implements HTML Image maps (ones defined with the MAP and AREA
+ * tags)
  * 
  * @author Ofir Leitner
  */
 class HTMLImageMap extends Button implements ActionListener {
 
-    ImageMapData mapData;
-    HTMLComponent htmlC;
+	ImageMapData mapData;
+	HTMLComponent htmlC;
 
-    HTMLImageMap(HTMLComponent htmlC) {
-        this.htmlC=htmlC;
-        setUIID("HTMLLink");
-        addActionListener(this);
-    }
-    
-    
-    public void actionPerformed(ActionEvent evt) {
-        if (mapData!=null) {
-            int x=evt.getX();
-            int y=evt.getY();
-            if ((mapData.areas!=null) && (x!=-1)) {
-                for(Enumeration e=mapData.areas.keys();e.hasMoreElements();) {
-                    Rectangle rect = (Rectangle)e.nextElement();
-                    if (rect.contains(x-getAbsoluteX(), y-getAbsoluteY())) {
-                        String link=(String)mapData.areas.get(rect);
-                        if (link!=null) {
-                            HTMLLink.processLink(htmlC, link);
-                        }
-                        return;
-                    }
-                }
-            }
-            if (mapData.defaultLink!=null) {
-                HTMLLink.processLink(htmlC, mapData.defaultLink);
-            }
-        }
+	HTMLImageMap(HTMLComponent htmlC) {
+		this.htmlC = htmlC;
+		setUIID("HTMLLink");
+		addActionListener(this);
+	}
 
-    }
+	public void actionPerformed(ActionEvent evt) {
+		if (mapData != null) {
+			int x = evt.getX();
+			int y = evt.getY();
+			if ((mapData.areas != null) && (x != -1)) {
+				for (Enumeration e = mapData.areas.keys(); e.hasMoreElements();) {
+					Rectangle rect = (Rectangle) e.nextElement();
+					if (rect.contains(x - getAbsoluteX(), y - getAbsoluteY())) {
+						String link = (String) mapData.areas.get(rect);
+						if (link != null) {
+							HTMLLink.processLink(htmlC, link);
+						}
+						return;
+					}
+				}
+			}
+			if (mapData.defaultLink != null) {
+				HTMLLink.processLink(htmlC, mapData.defaultLink);
+			}
+		}
 
+	}
 
 }

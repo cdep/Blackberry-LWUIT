@@ -27,23 +27,25 @@ import com.sun.lwuit.Label;
 
 /**
  * An abstract class that is extended later by HTMLListIndex and BulletItem
- *
+ * 
  * @author Ofir Leitner
  */
 abstract class HTMLListItem extends Label {
 
-    /**
-     * Sets the list style to the given value
-     *
-     * @param type The list type
-     */
-    abstract public void setStyleType(int type);
+	/**
+	 * Sets the list style to the given value
+	 * 
+	 * @param type
+	 *            The list type
+	 */
+	abstract public void setStyleType(int type);
 
-    /**
-     * Sets an image to replace the list's bullets
-     *
-     * @param imageUrl A URL containing the image to use as the list's bullets
-     */
-    abstract public void setImage(String imageUrl);
+	/**
+	 * Sets an image to replace the list's bullets
+	 * 
+	 * @param imageUrl
+	 *            A URL containing the image to use as the list's bullets
+	 */
+	abstract public void setImage(String imageUrl);
 
 }

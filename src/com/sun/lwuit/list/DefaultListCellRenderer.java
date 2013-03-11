@@ -32,164 +32,170 @@ import com.sun.lwuit.plaf.UIManager;
 import java.util.Hashtable;
 
 /**
- * Default implementation of the renderer based on a label see the {@link ListCellRenderer}
- * for more information about the use and purpose of this class
- *
+ * Default implementation of the renderer based on a label see the
+ * {@link ListCellRenderer} for more information about the use and purpose of
+ * this class
+ * 
  * @author Chen Fishbein
  */
 public class DefaultListCellRenderer extends Label implements ListCellRenderer, CellRenderer {
-    private boolean showNumbers;
-    private static boolean showNumbersDefault = true;
-    private Label focusComponent = new Label();
-    
-    /** 
-     * Creates a new instance of DefaultCellRenderer 
-     */
-    public DefaultListCellRenderer() {
-        super("");
-        setCellRenderer(true);
-        setEndsWith3Points(false);
-        showNumbers = UIManager.getInstance().isThemeConstant("rendererShowsNumbersBool", showNumbersDefault);
-        focusComponent.setUIID("ListRendererFocus");
-        focusComponent.setFocus(true);
-        setUIID("ListRenderer");
-    }
+	private boolean showNumbers;
+	private static boolean showNumbersDefault = true;
+	private Label focusComponent = new Label();
 
-    /**
-     * @inheritDoc
-     */
-    public void refreshTheme() {
-        super.refreshTheme();
-        focusComponent.refreshTheme();
-    }
+	/**
+	 * Creates a new instance of DefaultCellRenderer
+	 */
+	public DefaultListCellRenderer() {
+		super("");
+		setCellRenderer(true);
+		setEndsWith3Points(false);
+		showNumbers = UIManager.getInstance().isThemeConstant("rendererShowsNumbersBool", showNumbersDefault);
+		focusComponent.setUIID("ListRendererFocus");
+		focusComponent.setFocus(true);
+		setUIID("ListRenderer");
+	}
 
-    /** 
-     * Creates a new instance of DefaultCellRenderer 
-     * 
-     * @param showNumbers indicates numbers should be shown
-     */
-    public DefaultListCellRenderer(boolean showNumbers) {
-        this();
-        this.showNumbers = showNumbers;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void refreshTheme() {
+		super.refreshTheme();
+		focusComponent.refreshTheme();
+	}
 
+	/**
+	 * Creates a new instance of DefaultCellRenderer
+	 * 
+	 * @param showNumbers
+	 *            indicates numbers should be shown
+	 */
+	public DefaultListCellRenderer(boolean showNumbers) {
+		this();
+		this.showNumbers = showNumbers;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public Component getCellRendererComponent(Component list, Object model, Object value, int index, boolean isSelected) {
-        if(!Display.getInstance().shouldRenderSelection(list)) {
-            isSelected = false;
-        }
-        setFocus(isSelected);
-        if(showNumbers) {
-            String text = "" + value;
-            Hashtable t =  UIManager.getInstance().getResourceBundle();
-            if(t != null && value != null) {
-                Object o = t.get(value.toString());
-                if(o != null) {
-                    text = (String)o;
-                }
-            }
-            if(isRTL()){
-                setText(text+ " ." + (index + 1));
-            }else{
-                setText("" + (index + 1) + ". " + text);
-            }
-        } else {
-            if(value != null) {
-                setText(value.toString());
-            } else {
-                setText("null");
-            }
-        }
-        if(value instanceof Command) {
-            setIcon(((Command)value).getIcon());
-            setEnabled(((Command)value).isEnabled());
-        }
-        return this;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public Component getCellRendererComponent(Component list, Object model, Object value, int index, boolean isSelected) {
+		if (!Display.getInstance().shouldRenderSelection(list)) {
+			isSelected = false;
+		}
+		setFocus(isSelected);
+		if (showNumbers) {
+			String text = "" + value;
+			Hashtable t = UIManager.getInstance().getResourceBundle();
+			if (t != null && value != null) {
+				Object o = t.get(value.toString());
+				if (o != null) {
+					text = (String) o;
+				}
+			}
+			if (isRTL()) {
+				setText(text + " ." + (index + 1));
+			} else {
+				setText("" + (index + 1) + ". " + text);
+			}
+		} else {
+			if (value != null) {
+				setText(value.toString());
+			} else {
+				setText("null");
+			}
+		}
+		if (value instanceof Command) {
+			setIcon(((Command) value).getIcon());
+			setEnabled(((Command) value).isEnabled());
+		}
+		return this;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public Component getListCellRendererComponent(List list, Object value, int index, boolean isSelected) {
-        return getCellRendererComponent(list, list.getModel(), value, index, isSelected);
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public Component getListCellRendererComponent(List list, Object value, int index, boolean isSelected) {
+		return getCellRendererComponent(list, list.getModel(), value, index, isSelected);
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public Component getListFocusComponent(List list) {
-        return focusComponent;
-    }
-    /**
-     * Overriden to do nothing and remove a performance issue where renderer changes
-     * perform needless repaint calls
-     */
-    public void repaint() {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public Component getListFocusComponent(List list) {
+		return focusComponent;
+	}
 
-    /**
-     * Indicate whether numbering should exist for the default cell renderer
-     * 
-     * @return true if numers are shown by the numbers
-     */
-    public boolean isShowNumbers() {
-        return showNumbers;
-    }
+	/**
+	 * Overriden to do nothing and remove a performance issue where renderer
+	 * changes perform needless repaint calls
+	 */
+	public void repaint() {
+	}
 
-    /**
-     * Indicate whether numbering should exist for the default cell renderer
-     * 
-     * @param showNumbers indicate whether numbering should exist for the default cell renderer
-     */
-    public void setShowNumbers(boolean showNumbers) {
-        this.showNumbers = showNumbers;
-    }
+	/**
+	 * Indicate whether numbering should exist for the default cell renderer
+	 * 
+	 * @return true if numers are shown by the numbers
+	 */
+	public boolean isShowNumbers() {
+		return showNumbers;
+	}
 
-    /**
-     * The background transparency factor to apply to the selection focus
-     * 
-     * @return selection transperancy value
-     */
-    public int getSelectionTransparency() {
-        return focusComponent.getUnselectedStyle().getBgTransparency() & 0xff;
-    }
+	/**
+	 * Indicate whether numbering should exist for the default cell renderer
+	 * 
+	 * @param showNumbers
+	 *            indicate whether numbering should exist for the default cell
+	 *            renderer
+	 */
+	public void setShowNumbers(boolean showNumbers) {
+		this.showNumbers = showNumbers;
+	}
 
-    /**
-     * The background transparency factor to apply to the selection focus
-     * 
-     * @param selectionTransparency the selection transperancy value
-     */
-    public void setSelectionTransparency(int selectionTransparency) {
-        focusComponent.getUnselectedStyle().setBgTransparency(selectionTransparency);
-    }
+	/**
+	 * The background transparency factor to apply to the selection focus
+	 * 
+	 * @return selection transperancy value
+	 */
+	public int getSelectionTransparency() {
+		return focusComponent.getUnselectedStyle().getBgTransparency() & 0xff;
+	}
 
-    /**
-     * Inidicates whether the default list cell renderer will show numbers by default
-     * when constructed
-     *
-     * @param def true to show numbers for all renderers created in the future
-     */
-    public static void setShowNumbersDefault(boolean def) {
-        showNumbersDefault = def;
-    }
+	/**
+	 * The background transparency factor to apply to the selection focus
+	 * 
+	 * @param selectionTransparency
+	 *            the selection transperancy value
+	 */
+	public void setSelectionTransparency(int selectionTransparency) {
+		focusComponent.getUnselectedStyle().setBgTransparency(selectionTransparency);
+	}
 
-    /**
-     * Inidicates whether the default list cell renderer will show numbers by default
-     * when constructed
-     *
-     * @return true when showing numbers, false otherwise
-     */
-    public static boolean isShowNumbersDefault() {
-        return showNumbersDefault;
-    }
+	/**
+	 * Inidicates whether the default list cell renderer will show numbers by
+	 * default when constructed
+	 * 
+	 * @param def
+	 *            true to show numbers for all renderers created in the future
+	 */
+	public static void setShowNumbersDefault(boolean def) {
+		showNumbersDefault = def;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public Component getFocusComponent(Component list) {
-        return focusComponent;
-    }
+	/**
+	 * Inidicates whether the default list cell renderer will show numbers by
+	 * default when constructed
+	 * 
+	 * @return true when showing numbers, false otherwise
+	 */
+	public static boolean isShowNumbersDefault() {
+		return showNumbersDefault;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Component getFocusComponent(Component list) {
+		return focusComponent;
+	}
 }

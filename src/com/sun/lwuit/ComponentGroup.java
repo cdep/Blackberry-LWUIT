@@ -27,219 +27,237 @@ import com.sun.lwuit.layouts.BoxLayout;
 import com.sun.lwuit.plaf.UIManager;
 
 /**
- * <p>A component group is a container that applies the given UIID to a set of components within it
- * and gives the same UIID with "First"/"Last" prepended to the first and last components. E.g.
- * by default the  GroupElement UIID is applied so the first and last elements would have the
- * GroupElementFirst/GroupElementLast UIID's applied to them. If a group has only one element
- * the word "Only" is appended to the element UIID as in GroupElementOnly.
- * <p><b>Important!!!</b> A component group does nothing by default unless explicitly activated by
- * the theme by enabling the ComponentGroupBool constant (by default, this can be customized via the groupFlag property).
- * This allows logical grouping without changing the UI for themes that don't need grouping.
- * <p>This container uses box X/Y layout (defaults to Y), other layout managers shouldn't be used
- * since this container relies on the specific behavior of the box layout.
- *
+ * <p>
+ * A component group is a container that applies the given UIID to a set of
+ * components within it and gives the same UIID with "First"/"Last" prepended to
+ * the first and last components. E.g. by default the GroupElement UIID is
+ * applied so the first and last elements would have the
+ * GroupElementFirst/GroupElementLast UIID's applied to them. If a group has
+ * only one element the word "Only" is appended to the element UIID as in
+ * GroupElementOnly.
+ * <p>
+ * <b>Important!!!</b> A component group does nothing by default unless
+ * explicitly activated by the theme by enabling the ComponentGroupBool constant
+ * (by default, this can be customized via the groupFlag property). This allows
+ * logical grouping without changing the UI for themes that don't need grouping.
+ * <p>
+ * This container uses box X/Y layout (defaults to Y), other layout managers
+ * shouldn't be used since this container relies on the specific behavior of the
+ * box layout.
+ * 
  * @author Shai Almog
  */
 public class ComponentGroup extends Container {
-    private String elementUIID = "GroupElement";
-    private String groupFlag = "ComponentGroupBool";
-    private boolean uiidsDirty;
- 
-    /**
-     * Default constructor
-     */
-    public ComponentGroup() {
-        super(new BoxLayout(BoxLayout.Y_AXIS));
-        setUIID("ComponentGroup");
-    }
+	private String elementUIID = "GroupElement";
+	private String groupFlag = "ComponentGroupBool";
+	private boolean uiidsDirty;
 
-    private void reverseRadio(Component cmp) {
-        if(cmp instanceof ComboBox) {
-            ((ComboBox)cmp).setActAsSpinnerDialog(uiidsDirty);
-        }
-    }
+	/**
+	 * Default constructor
+	 */
+	public ComponentGroup() {
+		super(new BoxLayout(BoxLayout.Y_AXIS));
+		setUIID("ComponentGroup");
+	}
 
-    void insertComponentAt(int index, Component cmp) {
-        super.insertComponentAt(index, cmp);
-        updateUIIDs();
-    }
+	private void reverseRadio(Component cmp) {
+		if (cmp instanceof ComboBox) {
+			((ComboBox) cmp).setActAsSpinnerDialog(uiidsDirty);
+		}
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void refreshTheme() {
-        super.refreshTheme();
-        if(!UIManager.getInstance().isThemeConstant(groupFlag, false)) {
-            if(uiidsDirty) {
-                uiidsDirty = false;
-                int count = getComponentCount();
-                for(int iter = 0 ; iter < count ; iter++) {
-                    restoreUIID(getComponentAt(iter));
-                }
-            }
-        } else {
-            updateUIIDs();
-        }
-    }
+	void insertComponentAt(int index, Component cmp) {
+		super.insertComponentAt(index, cmp);
+		updateUIIDs();
+	}
 
-    void removeComponentImpl(Component cmp) {
-        super.removeComponentImpl(cmp);
-        
-        // restore original UIID
-        Object o = cmp.getClientProperty("$origUIID");
-        if(o != null) {
-            cmp.setUIID((String)o);
-        }
-        updateUIIDs();
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void refreshTheme() {
+		super.refreshTheme();
+		if (!UIManager.getInstance().isThemeConstant(groupFlag, false)) {
+			if (uiidsDirty) {
+				uiidsDirty = false;
+				int count = getComponentCount();
+				for (int iter = 0; iter < count; iter++) {
+					restoreUIID(getComponentAt(iter));
+				}
+			}
+		} else {
+			updateUIIDs();
+		}
+	}
 
-    private void updateUIIDs() {
-        if(!UIManager.getInstance().isThemeConstant(groupFlag, false)) {
-            return;
-        }
-        int count = getComponentCount();
-        if(count > 0) {
-            uiidsDirty = true;
-            if(count == 1) {
-                updateUIID(elementUIID + "Only", getComponentAt(0));
-            } else {
-                updateUIID(elementUIID + "First", getComponentAt(0));
-                if(count > 1) {
-                    updateUIID(elementUIID + "Last", getComponentAt(count - 1));
-                    for(int iter = 1 ; iter < count - 1 ; iter++) {
-                        updateUIID(elementUIID, getComponentAt(iter));
-                    }
-                }
-            }
-        }
-    }
+	void removeComponentImpl(Component cmp) {
+		super.removeComponentImpl(cmp);
 
-    private void updateUIID(String newUIID, Component c) {
-        Object o = c.getClientProperty("$origUIID");
-        if(o == null) {
-            c.putClientProperty("$origUIID", c.getUIID());
-        }
-        c.setUIID(newUIID);
-        reverseRadio(c);
-    }
+		// restore original UIID
+		Object o = cmp.getClientProperty("$origUIID");
+		if (o != null) {
+			cmp.setUIID((String) o);
+		}
+		updateUIIDs();
+	}
 
-    private void restoreUIID(Component c) {
-        String o = (String)c.getClientProperty("$origUIID");
-        if(o != null) {
-            c.setUIID(o);
-        }
-        reverseRadio(c);
-    }
+	private void updateUIIDs() {
+		if (!UIManager.getInstance().isThemeConstant(groupFlag, false)) {
+			return;
+		}
+		int count = getComponentCount();
+		if (count > 0) {
+			uiidsDirty = true;
+			if (count == 1) {
+				updateUIID(elementUIID + "Only", getComponentAt(0));
+			} else {
+				updateUIID(elementUIID + "First", getComponentAt(0));
+				if (count > 1) {
+					updateUIID(elementUIID + "Last", getComponentAt(count - 1));
+					for (int iter = 1; iter < count - 1; iter++) {
+						updateUIID(elementUIID, getComponentAt(iter));
+					}
+				}
+			}
+		}
+	}
 
-    /**
-     * Indicates that the component group should be horizontal by using the BoxLayout Y
-     * @return the horizontal
-     */
-    public boolean isHorizontal() {
-        return getLayout() instanceof BoxLayout && ((BoxLayout)getLayout()).getAxis() == BoxLayout.X_AXIS;
-    }
+	private void updateUIID(String newUIID, Component c) {
+		Object o = c.getClientProperty("$origUIID");
+		if (o == null) {
+			c.putClientProperty("$origUIID", c.getUIID());
+		}
+		c.setUIID(newUIID);
+		reverseRadio(c);
+	}
 
-    /**
-     * Indicates that the component group should be horizontal by using the BoxLayout Y
-     * @param horizontal the horizontal to set
-     */
-    public void setHorizontal(boolean horizontal) {
-        if(horizontal) {
-            setLayout(new BoxLayout(BoxLayout.X_AXIS));
-        } else {
-            setLayout(new BoxLayout(BoxLayout.Y_AXIS));
-        }
-    }
+	private void restoreUIID(Component c) {
+		String o = (String) c.getClientProperty("$origUIID");
+		if (o != null) {
+			c.setUIID(o);
+		}
+		reverseRadio(c);
+	}
 
-    /**
-     * The UIID to apply to the elements within this container
-     *
-     * @return the elementUIID
-     */
-    public String getElementUIID() {
-        return elementUIID;
-    }
+	/**
+	 * Indicates that the component group should be horizontal by using the
+	 * BoxLayout Y
+	 * 
+	 * @return the horizontal
+	 */
+	public boolean isHorizontal() {
+		return getLayout() instanceof BoxLayout && ((BoxLayout) getLayout()).getAxis() == BoxLayout.X_AXIS;
+	}
 
-    /**
-     * The UIID to apply to the elements within this container
-     * @param elementUIID the elementUIID to set
-     */
-    public void setElementUIID(String elementUIID) {
-        this.elementUIID = elementUIID;
-    }
+	/**
+	 * Indicates that the component group should be horizontal by using the
+	 * BoxLayout Y
+	 * 
+	 * @param horizontal
+	 *            the horizontal to set
+	 */
+	public void setHorizontal(boolean horizontal) {
+		if (horizontal) {
+			setLayout(new BoxLayout(BoxLayout.X_AXIS));
+		} else {
+			setLayout(new BoxLayout(BoxLayout.Y_AXIS));
+		}
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public String[] getPropertyNames() {
-        return new String[] {"elementUIID", "displayName", "horizontal", "groupFlag"};
-    }
+	/**
+	 * The UIID to apply to the elements within this container
+	 * 
+	 * @return the elementUIID
+	 */
+	public String getElementUIID() {
+		return elementUIID;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public Class[] getPropertyTypes() {
-       return new Class[] {String.class, String.class, Boolean.class, String.class};
-    }
+	/**
+	 * The UIID to apply to the elements within this container
+	 * 
+	 * @param elementUIID
+	 *            the elementUIID to set
+	 */
+	public void setElementUIID(String elementUIID) {
+		this.elementUIID = elementUIID;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public Object getPropertyValue(String name) {
-        if(name.equals("elementUIID")) {
-            return getElementUIID();
-        }
-        if(name.equals("horizontal")) {
-            if(isHorizontal()) {
-                return Boolean.TRUE;
-            }
-            return Boolean.FALSE;
-        }
-        if(name.equals("groupFlag")) {
-            return groupFlag;
-        }
-        return null;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public String[] getPropertyNames() {
+		return new String[] { "elementUIID", "displayName", "horizontal", "groupFlag" };
+	}
 
+	/**
+	 * @inheritDoc
+	 */
+	public Class[] getPropertyTypes() {
+		return new Class[] { String.class, String.class, Boolean.class, String.class };
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public String setPropertyValue(String name, Object value) {
-        if(name.equals("elementUIID")) {
-            setElementUIID((String)value);
-            return null;
-        }
-        if(name.equals("horizontal")) {
-            setHorizontal(((Boolean)value).booleanValue());
-            return null;
-        }
-        if(name.equals("groupFlag")) {
-            setGroupFlag(groupFlag);
-            return null;
-        }
-        return super.setPropertyValue(name, value);
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public Object getPropertyValue(String name) {
+		if (name.equals("elementUIID")) {
+			return getElementUIID();
+		}
+		if (name.equals("horizontal")) {
+			if (isHorizontal()) {
+				return Boolean.TRUE;
+			}
+			return Boolean.FALSE;
+		}
+		if (name.equals("groupFlag")) {
+			return groupFlag;
+		}
+		return null;
+	}
 
-    /**
-     * The group flag allows changing the flag that activates this group, from ComponentGroupBool to any
-     * arbitrary flag. This allows a developer/designer to enable grouping for a specific type of components
-     * (e.g. for horizontal Toggle Buttons) yet disable it for vertical lists of components.
-     *
-     * @return the groupFlag
-     */
-    public String getGroupFlag() {
-        return groupFlag;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public String setPropertyValue(String name, Object value) {
+		if (name.equals("elementUIID")) {
+			setElementUIID((String) value);
+			return null;
+		}
+		if (name.equals("horizontal")) {
+			setHorizontal(((Boolean) value).booleanValue());
+			return null;
+		}
+		if (name.equals("groupFlag")) {
+			setGroupFlag(groupFlag);
+			return null;
+		}
+		return super.setPropertyValue(name, value);
+	}
 
-    /**
-     * The group flag allows changing the flag that activates this group, from ComponentGroupBool to any
-     * arbitrary flag. This allows a developer/designer to enable grouping for a specific type of components
-     * (e.g. for horizontal Toggle Buttons) yet disable it for vertical lists of components.
-     * 
-     * @param groupFlag the groupFlag to set
-     */
-    public void setGroupFlag(String groupFlag) {
-        this.groupFlag = groupFlag;
-    }
+	/**
+	 * The group flag allows changing the flag that activates this group, from
+	 * ComponentGroupBool to any arbitrary flag. This allows a
+	 * developer/designer to enable grouping for a specific type of components
+	 * (e.g. for horizontal Toggle Buttons) yet disable it for vertical lists of
+	 * components.
+	 * 
+	 * @return the groupFlag
+	 */
+	public String getGroupFlag() {
+		return groupFlag;
+	}
+
+	/**
+	 * The group flag allows changing the flag that activates this group, from
+	 * ComponentGroupBool to any arbitrary flag. This allows a
+	 * developer/designer to enable grouping for a specific type of components
+	 * (e.g. for horizontal Toggle Buttons) yet disable it for vertical lists of
+	 * components.
+	 * 
+	 * @param groupFlag
+	 *            the groupFlag to set
+	 */
+	public void setGroupFlag(String groupFlag) {
+		this.groupFlag = groupFlag;
+	}
 }

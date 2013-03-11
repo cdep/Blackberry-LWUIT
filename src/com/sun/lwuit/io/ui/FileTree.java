@@ -28,15 +28,15 @@ import com.sun.lwuit.tree.Tree;
 
 /**
  * Simple class showing off the filesystem as a tree component
- *
+ * 
  * @author Shai Almog
  */
 public class FileTree extends Tree {
-    /**
-     * Default constructor
-     */
-    public FileTree() {
-        super(new FileTreeModel(true));
-        setUIID("FileTree");
-    }
+	/**
+	 * Default constructor
+	 */
+	public FileTree() {
+		super(new FileTreeModel(true));
+		setUIID("FileTree");
+	}
 }

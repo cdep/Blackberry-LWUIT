@@ -29,13 +29,14 @@ package com.sun.lwuit.events;
  * @author Chen Fishbein
  */
 public interface ActionListener {
-    
-    /**
-     * Invoked when an action occurred on a component
-     * 
-     * @param evt event object describing the source of the action as well as
-     * its trigger
-     */
-    public void actionPerformed(ActionEvent evt);
-    
+
+	/**
+	 * Invoked when an action occurred on a component
+	 * 
+	 * @param evt
+	 *            event object describing the source of the action as well as
+	 *            its trigger
+	 */
+	public void actionPerformed(ActionEvent evt);
+
 }

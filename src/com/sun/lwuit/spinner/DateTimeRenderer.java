@@ -31,117 +31,122 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * A renderer that can represent values for Date and time, time is represented as an integer
- * for seconds since midnight. This is formatted accordingly by the renderer
- *
+ * A renderer that can represent values for Date and time, time is represented
+ * as an integer for seconds since midnight. This is formatted accordingly by
+ * the renderer
+ * 
  * @author Shai Almog
  */
 class DateTimeRenderer extends DefaultListCellRenderer {
-    private boolean date;
-    private int type;
-    private char separatorChar;
-    private boolean twentyFourHours;
-    private boolean showSeconds;
+	private boolean date;
+	private int type;
+	private char separatorChar;
+	private boolean twentyFourHours;
+	private boolean showSeconds;
 
-    private DateTimeRenderer() {
-        super(false);
-    }
+	private DateTimeRenderer() {
+		super(false);
+	}
 
-    boolean isShowSeconds() {
-        return showSeconds;
-    }
+	boolean isShowSeconds() {
+		return showSeconds;
+	}
 
-    /**
-     * Construct a time renderer
-     *
-     * @param twentyFourHours show the value as 24 hour values or AM/PM
-     * @param showSeconds show the value of the seconds as well or hide it
-     */
-    public static DateTimeRenderer createTimeRenderer(boolean twentyFourHours, boolean showSeconds) {
-        DateTimeRenderer d = new DateTimeRenderer();
-        d.twentyFourHours = twentyFourHours;
-        d.showSeconds = showSeconds;
-        return d;
-    }
+	/**
+	 * Construct a time renderer
+	 * 
+	 * @param twentyFourHours
+	 *            show the value as 24 hour values or AM/PM
+	 * @param showSeconds
+	 *            show the value of the seconds as well or hide it
+	 */
+	public static DateTimeRenderer createTimeRenderer(boolean twentyFourHours, boolean showSeconds) {
+		DateTimeRenderer d = new DateTimeRenderer();
+		d.twentyFourHours = twentyFourHours;
+		d.showSeconds = showSeconds;
+		return d;
+	}
 
-    /**
-     * Constructs a date renderer
-     *
-     * @param separatorChar char separating the entries within the renderer such as /, - etc.
-     * @param format the date, one of the constant values in this class
-     */
-    public static DateTimeRenderer createDateRenderer(char separatorChar, int format) {
-        DateTimeRenderer d = new DateTimeRenderer();
-        d.date = true;
-        d.separatorChar = separatorChar;
-        d.type = format;
-        return d;
-    }
+	/**
+	 * Constructs a date renderer
+	 * 
+	 * @param separatorChar
+	 *            char separating the entries within the renderer such as /, -
+	 *            etc.
+	 * @param format
+	 *            the date, one of the constant values in this class
+	 */
+	public static DateTimeRenderer createDateRenderer(char separatorChar, int format) {
+		DateTimeRenderer d = new DateTimeRenderer();
+		d.date = true;
+		d.separatorChar = separatorChar;
+		d.type = format;
+		return d;
+	}
 
-    private String twoDigits(int i) {
-        if(i < 10) {
-            return "0" + i;
-        }
-        return "" + i;
-    }
+	private String twoDigits(int i) {
+		if (i < 10) {
+			return "0" + i;
+		}
+		return "" + i;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public Component getListCellRendererComponent(List list, Object value, int index, boolean isSelected) {
-        if(date) {
-            Calendar c = Calendar.getInstance();
-            c.setTime((Date)value);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-            int month = c.get(Calendar.MONTH) + 1;
-            int year = c.get(Calendar.YEAR);
-            switch(type) {
-                case Spinner.DATE_FORMAT_DD_MM_YYYY:
-                    value = twoDigits(day) + separatorChar + twoDigits(month) + separatorChar + year;
-                    break;
-                case Spinner.DATE_FORMAT_MM_DD_YYYY:
-                    value = twoDigits(month) + separatorChar + twoDigits(day) + separatorChar + year;
-                    break;
-                case Spinner.DATE_FORMAT_DD_MM_YY:
-                    value = twoDigits(day) + separatorChar + twoDigits(month) + separatorChar + (year % 100);
-                    break;
-                case Spinner.DATE_FORMAT_MM_DD_YY:
-                    value = twoDigits(month) + separatorChar + twoDigits(day) + separatorChar + (year % 100);
-                    break;
-            }
-        } else {
-            int v = ((Integer)value).intValue();
-            int seconds = v % 60;
-            v /= 60;
-            int minutes = v % 60;
-            v /= 60;
-            int hours;
-            String amPm = "";
-            if(twentyFourHours) {
-                hours = v % 24;
-            } else {
-                hours = v % 12;
-                if(v >= 12) {
-                    amPm = "PM";
-                } else {
-                    amPm = "AM";
-                }
-            }
-            if(showSeconds) {
-                value = twoDigits(hours) + ":" + twoDigits(minutes) + ":" + twoDigits(seconds) + amPm;
-            } else {
-                value = twoDigits(hours) + ":" + twoDigits(minutes) + amPm;
-            }
-        }
-        return super.getListCellRendererComponent(list, value, index, isSelected);
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public Component getListCellRendererComponent(List list, Object value, int index, boolean isSelected) {
+		if (date) {
+			Calendar c = Calendar.getInstance();
+			c.setTime((Date) value);
+			int day = c.get(Calendar.DAY_OF_MONTH);
+			int month = c.get(Calendar.MONTH) + 1;
+			int year = c.get(Calendar.YEAR);
+			switch (type) {
+			case Spinner.DATE_FORMAT_DD_MM_YYYY:
+				value = twoDigits(day) + separatorChar + twoDigits(month) + separatorChar + year;
+				break;
+			case Spinner.DATE_FORMAT_MM_DD_YYYY:
+				value = twoDigits(month) + separatorChar + twoDigits(day) + separatorChar + year;
+				break;
+			case Spinner.DATE_FORMAT_DD_MM_YY:
+				value = twoDigits(day) + separatorChar + twoDigits(month) + separatorChar + (year % 100);
+				break;
+			case Spinner.DATE_FORMAT_MM_DD_YY:
+				value = twoDigits(month) + separatorChar + twoDigits(day) + separatorChar + (year % 100);
+				break;
+			}
+		} else {
+			int v = ((Integer) value).intValue();
+			int seconds = v % 60;
+			v /= 60;
+			int minutes = v % 60;
+			v /= 60;
+			int hours;
+			String amPm = "";
+			if (twentyFourHours) {
+				hours = v % 24;
+			} else {
+				hours = v % 12;
+				if (v >= 12) {
+					amPm = "PM";
+				} else {
+					amPm = "AM";
+				}
+			}
+			if (showSeconds) {
+				value = twoDigits(hours) + ":" + twoDigits(minutes) + ":" + twoDigits(seconds) + amPm;
+			} else {
+				value = twoDigits(hours) + ":" + twoDigits(minutes) + amPm;
+			}
+		}
+		return super.getListCellRendererComponent(list, value, index, isSelected);
+	}
 
-    /**
-     * @return the twentyFourHours
-     */
-    public boolean isTwentyFourHours() {
-        return twentyFourHours;
-    }
-
+	/**
+	 * @return the twentyFourHours
+	 */
+	public boolean isTwentyFourHours() {
+		return twentyFourHours;
+	}
 
 }

@@ -31,157 +31,162 @@ import java.io.IOException;
 
 /**
  * A cookie for an HTTP request
- *
+ * 
  * @author Shai Almog
  */
 public class Cookie implements Externalizable {
-    private String name;
-    private String value;
-    private String domain;
-    private long expires;
+	private String name;
+	private String value;
+	private String domain;
+	private long expires;
 
-    private static boolean autoStored = true;
+	private static boolean autoStored = true;
 
-    public static String STORAGE_NAME = "Cookies";
-    
-    static{
-        Util.register("Cookie", Cookie.class);
-    }
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
+	public static String STORAGE_NAME = "Cookies";
 
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+	static {
+		Util.register("Cookie", Cookie.class);
+	}
 
-    /**
-     * @return the value
-     */
-    public String getValue() {
-        return value;
-    }
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * @param value the value to set
-     */
-    public void setValue(String value) {
-        this.value = value;
-    }
+	/**
+	 * @param name
+	 *            the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    /**
-     * @return the domain
-     */
-    public String getDomain() {
-        return domain;
-    }
+	/**
+	 * @return the value
+	 */
+	public String getValue() {
+		return value;
+	}
 
-    /**
-     * @param domain the domain to set
-     */
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
+	/**
+	 * @param value
+	 *            the value to set
+	 */
+	public void setValue(String value) {
+		this.value = value;
+	}
 
-    /**
-     * @return the expires
-     */
-    public long getExpires() {
-        return expires;
-    }
+	/**
+	 * @return the domain
+	 */
+	public String getDomain() {
+		return domain;
+	}
 
-    /**
-     * @param expires the expires to set
-     */
-    public void setExpires(long expires) {
-        this.expires = expires;
-    }
+	/**
+	 * @param domain
+	 *            the domain to set
+	 */
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public int getVersion() {
-        return 1;
-    }
+	/**
+	 * @return the expires
+	 */
+	public long getExpires() {
+		return expires;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void externalize(DataOutputStream out) throws IOException {
-        out.writeUTF(name);
-        if(value != null) {
-            out.writeBoolean(true);
-            out.writeUTF(value);
-        } else {
-            out.writeBoolean(false);
-        }
-        if(domain != null) {
-            out.writeBoolean(true);
-            out.writeUTF(domain);
-        } else {
-            out.writeBoolean(false);
-        }
-        out.writeLong(expires);
-    }
+	/**
+	 * @param expires
+	 *            the expires to set
+	 */
+	public void setExpires(long expires) {
+		this.expires = expires;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void internalize(int version, DataInputStream in) throws IOException {
-        name = in.readUTF();
-        if(in.readBoolean()) {
-            value = in.readUTF();
-        }
-        if(in.readBoolean()) {
-            domain = in.readUTF();
-        }
-        expires = in.readLong();
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public int getVersion() {
+		return 1;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public String getObjectId() {
-        return "Cookie";
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void externalize(DataOutputStream out) throws IOException {
+		out.writeUTF(name);
+		if (value != null) {
+			out.writeBoolean(true);
+			out.writeUTF(value);
+		} else {
+			out.writeBoolean(false);
+		}
+		if (domain != null) {
+			out.writeBoolean(true);
+			out.writeUTF(domain);
+		} else {
+			out.writeBoolean(false);
+		}
+		out.writeLong(expires);
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public String toString() {
-        return "name = " + name + " value = " + value + " domain = " + domain;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void internalize(int version, DataInputStream in) throws IOException {
+		name = in.readUTF();
+		if (in.readBoolean()) {
+			value = in.readUTF();
+		}
+		if (in.readBoolean()) {
+			domain = in.readUTF();
+		}
+		expires = in.readLong();
+	}
 
-    /**
-     * This method configures the auto storage of cookies
-     *
-     * @param autoStored
-     */
-    public static void setAutoStored(boolean autoStored) {
-        Cookie.autoStored = autoStored;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public String getObjectId() {
+		return "Cookie";
+	}
 
-    /**
-     * Returns true if the Cookies are auto stored to storage
-     * 
-     * @return autoStored
-     */
-    public static boolean isAutoStored() {
-        return autoStored;
-    }
-    
-    /**
-     * Clears all cookies history from storage
-     */
-    public static void clearCookiesFromStorage() {
-        if (Storage.getInstance().exists(Cookie.STORAGE_NAME)) {
-            Storage.getInstance().deleteStorageFile(Cookie.STORAGE_NAME);
-        }
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public String toString() {
+		return "name = " + name + " value = " + value + " domain = " + domain;
+	}
+
+	/**
+	 * This method configures the auto storage of cookies
+	 * 
+	 * @param autoStored
+	 */
+	public static void setAutoStored(boolean autoStored) {
+		Cookie.autoStored = autoStored;
+	}
+
+	/**
+	 * Returns true if the Cookies are auto stored to storage
+	 * 
+	 * @return autoStored
+	 */
+	public static boolean isAutoStored() {
+		return autoStored;
+	}
+
+	/**
+	 * Clears all cookies history from storage
+	 */
+	public static void clearCookiesFromStorage() {
+		if (Storage.getInstance().exists(Cookie.STORAGE_NAME)) {
+			Storage.getInstance().deleteStorageFile(Cookie.STORAGE_NAME);
+		}
+	}
 }

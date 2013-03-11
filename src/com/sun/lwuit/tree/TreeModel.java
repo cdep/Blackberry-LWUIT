@@ -27,25 +27,27 @@ import java.util.Vector;
 
 /**
  * Arranges tree node objects, a node can essentially be anything
- *
+ * 
  * @author Shai Almog
  */
 public interface TreeModel {
-    /**
-     * Returns the child objects representing the given parent, null should return
-     * the root objects
-     *
-     * @param parent the parent object whose children should be returned, null would return the
-     * tree roots
-     * @return the children of the given node within the tree
-     */
-    public Vector getChildren(Object parent);
+	/**
+	 * Returns the child objects representing the given parent, null should
+	 * return the root objects
+	 * 
+	 * @param parent
+	 *            the parent object whose children should be returned, null
+	 *            would return the tree roots
+	 * @return the children of the given node within the tree
+	 */
+	public Vector getChildren(Object parent);
 
-    /**
-     * Is the node a leaf or a folder
-     *
-     * @param node a node within the tree
-     * @return true if the node is a leaf that can't be expanded
-     */
-    public boolean isLeaf(Object node);
+	/**
+	 * Is the node a leaf or a folder
+	 * 
+	 * @param node
+	 *            a node within the tree
+	 * @return true if the node is a leaf that can't be expanded
+	 */
+	public boolean isLeaf(Object node);
 }

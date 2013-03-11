@@ -32,59 +32,59 @@ import net.rim.device.api.ui.VirtualKeyboard;
 
 /**
  * Interface to the RIM native virtual keyboard
- *
+ * 
  * @author Chen Fishbein
  */
-public class BlackBerryVirtualKeyboard implements VirtualKeyboardInterface{
-    static boolean blockFolding;
-    private BlackBerryCanvas canvas;
-    
-    BlackBerryVirtualKeyboard(BlackBerryCanvas canvas) {
-        this.canvas = canvas;
-    }
-    
-    
-    public String getVirtualKeyboardName() {
-        return "BlackBerry VirtualKeyboard";
-    }
+public class BlackBerryVirtualKeyboard implements VirtualKeyboardInterface {
+	static boolean blockFolding;
+	private BlackBerryCanvas canvas;
 
-    public void showKeyboard(boolean show) {
-        // we need this since when opening the VKB the text field loses focus and tries to fold the keyboard for some reason
-        if(blockFolding && !show) {
-            return;
-        }
-        if(canvas.getVirtualKeyboard() == null){
-            return;
-        }
-        if(show) { 
-            if(isVirtualKeyboardShowing()){
-                return;
-            }
-            canvas.getVirtualKeyboard().setVisibility(VirtualKeyboard.SHOW);
-            
-            Form current = canvas.getImplementation().getCurrentForm();
-            Component focus = current.getFocused();
-            if(focus != null && focus instanceof TextArea){
-                TextArea txtCmp = (TextArea) focus;
-                if((txtCmp.getConstraint() & TextArea.NON_PREDICTIVE) == 0){
-                    canvas.getImplementation().nativeEdit(txtCmp, txtCmp.getMaxSize(), txtCmp.getConstraint(), txtCmp.getText(), 0);
-                }
-            }            
-        } else {
-            canvas.getVirtualKeyboard().setVisibility(VirtualKeyboard.HIDE);
-            canvas.getImplementation().finishEdit(true);
-        }
-    }
+	BlackBerryVirtualKeyboard(BlackBerryCanvas canvas) {
+		this.canvas = canvas;
+	}
 
-    public boolean isVirtualKeyboardShowing() {
-        if(canvas.getVirtualKeyboard() == null){
-            return false;
-        }
-        return canvas.getVirtualKeyboard().getVisibility() == VirtualKeyboard.SHOW;
-    }
+	public String getVirtualKeyboardName() {
+		return "BlackBerry VirtualKeyboard";
+	}
 
-    public void setInputType(int inputType) {
-        //no API to select Virtual Keyboard input type
-    }
+	public void showKeyboard(boolean show) {
+		// we need this since when opening the VKB the text field loses focus
+		// and tries to fold the keyboard for some reason
+		if (blockFolding && !show) {
+			return;
+		}
+		if (canvas.getVirtualKeyboard() == null) {
+			return;
+		}
+		if (show) {
+			if (isVirtualKeyboardShowing()) {
+				return;
+			}
+			canvas.getVirtualKeyboard().setVisibility(VirtualKeyboard.SHOW);
+
+			Form current = canvas.getImplementation().getCurrentForm();
+			Component focus = current.getFocused();
+			if (focus != null && focus instanceof TextArea) {
+				TextArea txtCmp = (TextArea) focus;
+				if ((txtCmp.getConstraint() & TextArea.NON_PREDICTIVE) == 0) {
+					canvas.getImplementation().nativeEdit(txtCmp, txtCmp.getMaxSize(), txtCmp.getConstraint(), txtCmp.getText(), 0);
+				}
+			}
+		} else {
+			canvas.getVirtualKeyboard().setVisibility(VirtualKeyboard.HIDE);
+			canvas.getImplementation().finishEdit(true);
+		}
+	}
+
+	public boolean isVirtualKeyboardShowing() {
+		if (canvas.getVirtualKeyboard() == null) {
+			return false;
+		}
+		return canvas.getVirtualKeyboard().getVisibility() == VirtualKeyboard.SHOW;
+	}
+
+	public void setInputType(int inputType) {
+		// no API to select Virtual Keyboard input type
+	}
 
 }

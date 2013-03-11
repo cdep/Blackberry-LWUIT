@@ -26,11 +26,11 @@ package com.sun.lwuit.impl.blackberry;
 
 /**
  * Implementation class for newer blackberry devices
- *
+ * 
  * @author Shai Almog, Thorsten Schemm
  */
 public class BlackBerryTouchImplementation extends BlackBerryImplementation {
-    BlackBerryCanvas createCanvas() {
-        return new BlackBerryTouchSupport(this);
-    }
+	BlackBerryCanvas createCanvas() {
+		return new BlackBerryTouchSupport(this);
+	}
 }

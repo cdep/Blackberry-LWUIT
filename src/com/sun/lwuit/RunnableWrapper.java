@@ -26,133 +26,135 @@ package com.sun.lwuit;
 import java.util.Vector;
 
 /**
- * Class used by callSeriallyAndWait and invokeAndBlock and form to save code size
+ * Class used by callSeriallyAndWait and invokeAndBlock and form to save code
+ * size
  * 
  * @author Shai Almog
  */
 class RunnableWrapper implements Runnable {
-    private static final Object THREADPOOL_LOCK = new Object();
-    private static Vector threadPool = new Vector();
+	private static final Object THREADPOOL_LOCK = new Object();
+	private static Vector threadPool = new Vector();
 
-    private static int threadCount = 0;
-    private static int maxThreadCount = 5;
-    private static int availableThreads = 0;
+	private static int threadCount = 0;
+	private static int maxThreadCount = 5;
+	private static int availableThreads = 0;
 
-    private boolean done = false;
-    private Runnable internal;
-    private int type;
-    private RuntimeException err;
-    private Form parentForm;
-    private Painter paint;
-    private boolean reverse;
+	private boolean done = false;
+	private Runnable internal;
+	private int type;
+	private RuntimeException err;
+	private Form parentForm;
+	private Painter paint;
+	private boolean reverse;
 
-    public RunnableWrapper(Form parentForm, Painter paint, boolean reverse) {
-        this.parentForm = parentForm;
-        this.paint = paint;
-        this.reverse = reverse;
-    }
-    
-    public RunnableWrapper(Runnable internal, int type) {
-        this.internal = internal;
-        this.type = type;
-    }
+	public RunnableWrapper(Form parentForm, Painter paint, boolean reverse) {
+		this.parentForm = parentForm;
+		this.paint = paint;
+		this.reverse = reverse;
+	}
 
-    public RuntimeException getErr() {
-        return err;
-    }
+	public RunnableWrapper(Runnable internal, int type) {
+		this.internal = internal;
+		this.type = type;
+	}
 
-    public void setDone(boolean done) {
-        this.done = done;
-    }
-    
-    public boolean isDone() {
-        return done;
-    }
+	public RuntimeException getErr() {
+		return err;
+	}
 
-    public void run() {
-        if(parentForm != null) {
-            // set current form uses this portion to make sure all set current operations
-            // occur on the EDT
-            if(paint == null) {
-                Display.getInstance().setCurrent(parentForm, reverse);
-                return;
-            }
-            
-            Dialog dlg = (Dialog)parentForm;
-            while (!dlg.isDisposed()) {
-                try {
-                    synchronized(Display.lock) {
-                        Display.lock.wait(40);
-                    }
-                } catch (InterruptedException ex) {
-                }
-            }
-            parentForm.getStyle().setBgPainter(paint);
-        } else {
-            switch(type) {
-                case 0: 
-                    internal.run();
-                    done = true;
-                    synchronized(Display.lock) {
-                        Display.lock.notify();
-                    }
-                    break;
-                case 1:
-                    try {
-                        internal.run();
-                    } catch(RuntimeException ex) {
-                        this.err = ex;
-                    }
-                    break;
-                case 2:
-                    while(!done) {
-                        synchronized(Display.lock) {
-                            try {
-                                Display.lock.wait(10);
-                            } catch (InterruptedException ex) {
-                                ex.printStackTrace();
-                            }
-                        }
-                    }
-                    break;
-                case 3:
-                    Display.getInstance().mainEDTLoop();
-                    break;
-                case 4:
-                    while(!Display.getInstance().lwuitExited) {
-                        Runnable r = null;
-                        synchronized(THREADPOOL_LOCK) {
-                            if(threadPool.size() > 0) {
-                                r = (Runnable)threadPool.elementAt(0);
-                                threadPool.removeElementAt(0);
-                            } else {
-                                try {
-                                    availableThreads++;
-                                    THREADPOOL_LOCK.wait();
-                                    availableThreads--;
-                                } catch (InterruptedException ex) {
-                                    ex.printStackTrace();
-                                }
-                            }
-                        }
-                        if(r != null) {
-                            r.run();
-                        }
-                    }
-            }
-        }
-        done = true;
-    }
+	public void setDone(boolean done) {
+		this.done = done;
+	}
 
-    static void pushToThreadPool(Runnable r) {
-        if(availableThreads == 0 && threadCount < maxThreadCount) {
-            threadCount++;
-            Thread poolThread = new Thread(new RunnableWrapper(null, 4), "invokeAndBlock" + threadCount);
-            poolThread.start();
-        }
-        synchronized(THREADPOOL_LOCK) {
-            threadPool.addElement(r);
-            THREADPOOL_LOCK.notify();
-        }
-    }
+	public boolean isDone() {
+		return done;
+	}
+
+	public void run() {
+		if (parentForm != null) {
+			// set current form uses this portion to make sure all set current
+			// operations
+			// occur on the EDT
+			if (paint == null) {
+				Display.getInstance().setCurrent(parentForm, reverse);
+				return;
+			}
+
+			Dialog dlg = (Dialog) parentForm;
+			while (!dlg.isDisposed()) {
+				try {
+					synchronized (Display.lock) {
+						Display.lock.wait(40);
+					}
+				} catch (InterruptedException ex) {
+				}
+			}
+			parentForm.getStyle().setBgPainter(paint);
+		} else {
+			switch (type) {
+			case 0:
+				internal.run();
+				done = true;
+				synchronized (Display.lock) {
+					Display.lock.notify();
+				}
+				break;
+			case 1:
+				try {
+					internal.run();
+				} catch (RuntimeException ex) {
+					this.err = ex;
+				}
+				break;
+			case 2:
+				while (!done) {
+					synchronized (Display.lock) {
+						try {
+							Display.lock.wait(10);
+						} catch (InterruptedException ex) {
+							ex.printStackTrace();
+						}
+					}
+				}
+				break;
+			case 3:
+				Display.getInstance().mainEDTLoop();
+				break;
+			case 4:
+				while (!Display.getInstance().lwuitExited) {
+					Runnable r = null;
+					synchronized (THREADPOOL_LOCK) {
+						if (threadPool.size() > 0) {
+							r = (Runnable) threadPool.elementAt(0);
+							threadPool.removeElementAt(0);
+						} else {
+							try {
+								availableThreads++;
+								THREADPOOL_LOCK.wait();
+								availableThreads--;
+							} catch (InterruptedException ex) {
+								ex.printStackTrace();
+							}
+						}
+					}
+					if (r != null) {
+						r.run();
+					}
+				}
+			}
+		}
+		done = true;
+	}
+
+	static void pushToThreadPool(Runnable r) {
+		if (availableThreads == 0 && threadCount < maxThreadCount) {
+			threadCount++;
+			Thread poolThread = new Thread(new RunnableWrapper(null, 4), "invokeAndBlock" + threadCount);
+			poolThread.start();
+		}
+		synchronized (THREADPOOL_LOCK) {
+			threadPool.addElement(r);
+			THREADPOOL_LOCK.notify();
+		}
+	}
 }

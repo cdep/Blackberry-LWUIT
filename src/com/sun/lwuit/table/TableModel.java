@@ -26,74 +26,84 @@ package com.sun.lwuit.table;
 import com.sun.lwuit.events.DataChangedListener;
 
 /**
- * The table and table model class are complimentry classes allowing the quick construction
- * of tabular data controls. The table model represents the data source according to which
- * the table is constructed.
- *
+ * The table and table model class are complimentry classes allowing the quick
+ * construction of tabular data controls. The table model represents the data
+ * source according to which the table is constructed.
+ * 
  * @author Shai Almog
  */
 public interface TableModel {
-    /**
-     * Returns the number of rows in the table
-     *
-     * @return the number of rows in the table
-     */
-    public int getRowCount();
+	/**
+	 * Returns the number of rows in the table
+	 * 
+	 * @return the number of rows in the table
+	 */
+	public int getRowCount();
 
-    /**
-     * Returns the number of columns in the table
-     *
-     * @return the number of columns in the table
-     */
-    public int getColumnCount();
+	/**
+	 * Returns the number of columns in the table
+	 * 
+	 * @return the number of columns in the table
+	 */
+	public int getColumnCount();
 
-    /**
-     * Returns the name of the column at the given offset
-     *
-     * @param i the offset for the column name
-     * @return name to display at the top of the table
-     */
-    public String getColumnName(int i);
+	/**
+	 * Returns the name of the column at the given offset
+	 * 
+	 * @param i
+	 *            the offset for the column name
+	 * @return name to display at the top of the table
+	 */
+	public String getColumnName(int i);
 
-    /**
-     * Returns true if the cell at the given location is an editable cell
-     *
-     * @param row the cell row
-     * @param column the cell column
-     * @return true if the cell at the given location is an editable cell
-     */
-    public boolean isCellEditable(int row, int column);
+	/**
+	 * Returns true if the cell at the given location is an editable cell
+	 * 
+	 * @param row
+	 *            the cell row
+	 * @param column
+	 *            the cell column
+	 * @return true if the cell at the given location is an editable cell
+	 */
+	public boolean isCellEditable(int row, int column);
 
-    /**
-     * Returns the value of the cell at the given location
-     *
-     * @param row the cell row
-     * @param column the cell column
-     * @return the value of the cell at the given location
-     */
-    public Object getValueAt(int row, int column);
+	/**
+	 * Returns the value of the cell at the given location
+	 * 
+	 * @param row
+	 *            the cell row
+	 * @param column
+	 *            the cell column
+	 * @return the value of the cell at the given location
+	 */
+	public Object getValueAt(int row, int column);
 
-    /**
-     * Sets the value of the cell at the given location
-     *
-     * @param row the cell row
-     * @param column the cell column
-     * @param o the value of the cell at the given location 
-     */
-    public void setValueAt(int row, int column, Object o);
+	/**
+	 * Sets the value of the cell at the given location
+	 * 
+	 * @param row
+	 *            the cell row
+	 * @param column
+	 *            the cell column
+	 * @param o
+	 *            the value of the cell at the given location
+	 */
+	public void setValueAt(int row, int column, Object o);
 
-    /**
-     * Adds a listener to the data changed event
-     *
-     * @param d the new listener
-     */
-    public void addDataChangeListener(DataChangedListener d);
+	/**
+	 * Adds a listener to the data changed event
+	 * 
+	 * @param d
+	 *            the new listener
+	 */
+	public void addDataChangeListener(DataChangedListener d);
 
-    /**
-     * Removes a listener to the data changed event
-     *
-     * @param d the listener to remove
-     */
-    public void removeDataChangeListener(DataChangedListener d);
-    
+	/**
+	 * Removes a listener to the data changed event
+	 * 
+	 * @param d
+	 *            the listener to remove
+	 */
+	public void removeDataChangeListener(DataChangedListener d);
+
 }

@@ -36,218 +36,225 @@ import com.sun.lwuit.plaf.UIManager;
  */
 public class RadioButton extends Button {
 
-    
-    private boolean selected= false;
-    
-    /**
-     * The group in which this button is a part
-     */
-    private ButtonGroup group;
+	private boolean selected = false;
 
-    private boolean oppositeSide;
+	/**
+	 * The group in which this button is a part
+	 */
+	private ButtonGroup group;
 
-    /**
-     * Constructs a radio with the given text
-     * 
-     * @param text to display next to the button
-     */
-    public RadioButton(String text) {
-        this(text, null);
-    }
-    
-    /**
-     * Creates an empty radio button
-     */
-    public RadioButton() {
-        this("");
-    }
-    
-    /**
-     * Constructs a radio with the given icon
-     * 
-     * @param icon icon to show next to the button
-     */
-    public RadioButton(Image icon) {
-        this("", icon);
-    }
+	private boolean oppositeSide;
 
-    /**
-     * Constructs a radio with the given text and icon
-     * 
-     * @param text to display next to the button
-     * @param icon icon to show next to the button
-     */
-    public RadioButton(String text,Image icon) {
-        super(text,icon);
-        setUIID("RadioButton");
-        updateSide();
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public String toString() {
-        return "Radio Button " + getText();
-    }
+	/**
+	 * Constructs a radio with the given text
+	 * 
+	 * @param text
+	 *            to display next to the button
+	 */
+	public RadioButton(String text) {
+		this(text, null);
+	}
 
-    int getAvaliableSpaceForText() {
-        if(isToggle()) {
-            return super.getAvaliableSpaceForText();
-        }
-        LookAndFeel l = UIManager.getInstance().getLookAndFeel();
-        if(l instanceof DefaultLookAndFeel) {
-            Image[] rButtonImages = ((DefaultLookAndFeel)l).getRadioButtonImages();
-            if (rButtonImages != null) {
-                int index = isSelected() ? 1 : 0;
-                return super.getAvaliableSpaceForText() - rButtonImages[index].getWidth();
-            }
-        }
-        return super.getAvaliableSpaceForText() - (getHeight() + getGap());
-    }
-    
-    /**
-     * Returns true if the radio button is selected
-     * 
-     * @return true if the radio button is selected
-     */
-    public boolean isSelected() {
-        return selected;
-    }
+	/**
+	 * Creates an empty radio button
+	 */
+	public RadioButton() {
+		this("");
+	}
 
-    void setSelectedImpl(boolean selected) {
-        this.selected = selected;
-        repaint();
-    }
-    
-    /**
-     * Selects the current radio button
-     * 
-     * @param selected value for selection
-     */
-    public void setSelected(boolean selected) {
-        setSelectedImpl(selected);
-        if(group != null && selected) {
-            group.setSelected(this);
-        }
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public void released(int x, int y) {
-        // prevent the radio button from being "turned off"
-        if(!isSelected()) {
-            setSelected(true);
-        }
-        super.released(x, y);
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public void paint(Graphics g) {
-        if(isToggle()) {
-            UIManager.getInstance().getLookAndFeel().drawButton(g, this);
-        } else {
-            UIManager.getInstance().getLookAndFeel().drawRadioButton(g, this);
-        }
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    protected Dimension calcPreferredSize(){
-        return UIManager.getInstance().getLookAndFeel().getRadioButtonPreferredSize(this);
-    }
-    
-    /**
-     * Setting a new button group
-     * 
-     * @param group a new button group
-     */
-    void setButtonGroup(ButtonGroup group) {
-        this.group = group;
-    }
+	/**
+	 * Constructs a radio with the given icon
+	 * 
+	 * @param icon
+	 *            icon to show next to the button
+	 */
+	public RadioButton(Image icon) {
+		this("", icon);
+	}
 
-    /**
-     * @inheritDoc
-     */
-    void fireActionEvent() {
-        if(group != null) {
-            group.setSelected(this);
-        }
-        super.fireActionEvent();
-    }
+	/**
+	 * Constructs a radio with the given text and icon
+	 * 
+	 * @param text
+	 *            to display next to the button
+	 * @param icon
+	 *            icon to show next to the button
+	 */
+	public RadioButton(String text, Image icon) {
+		super(text, icon);
+		setUIID("RadioButton");
+		updateSide();
+	}
 
-    /**
-     * This is a helper method to ease the usage of button groups
-     *
-     * @param groupName a name for the goup
-     */
-    public void setGroup(String groupName) {
-        putClientProperty("$group", groupName);
-        initNamedGroup();
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public String toString() {
+		return "Radio Button " + getText();
+	}
 
-    void initComponentImpl() {
-        super.initComponentImpl();
-        initNamedGroup();
-    }
+	int getAvaliableSpaceForText() {
+		if (isToggle()) {
+			return super.getAvaliableSpaceForText();
+		}
+		LookAndFeel l = UIManager.getInstance().getLookAndFeel();
+		if (l instanceof DefaultLookAndFeel) {
+			Image[] rButtonImages = ((DefaultLookAndFeel) l).getRadioButtonImages();
+			if (rButtonImages != null) {
+				int index = isSelected() ? 1 : 0;
+				return super.getAvaliableSpaceForText() - rButtonImages[index].getWidth();
+			}
+		}
+		return super.getAvaliableSpaceForText() - (getHeight() + getGap());
+	}
 
-    private void updateSide() {
-        Boolean v = UIManager.getInstance().isThemeConstant("radioOppositeSideBool");
-        if(v != null) {
-            oppositeSide = v.booleanValue();
-        }
-    }
+	/**
+	 * Returns true if the radio button is selected
+	 * 
+	 * @return true if the radio button is selected
+	 */
+	public boolean isSelected() {
+		return selected;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void refreshTheme() {
-        super.refreshTheme();
-        updateSide();
-    }
+	void setSelectedImpl(boolean selected) {
+		this.selected = selected;
+		repaint();
+	}
 
-    private void initNamedGroup() {
-        if(isInitialized()) {
-            String s = getGroup();
-            if(s != null) {
-                Form f = getComponentForm();
-                ButtonGroup b = (ButtonGroup)f.getClientProperty("$radio" + s);
-                if(b == null) {
-                    b = new ButtonGroup();
-                    f.putClientProperty("$radio" + s, b);
-                }
-                b.add(this);
-            }
-        }
-    }
+	/**
+	 * Selects the current radio button
+	 * 
+	 * @param selected
+	 *            value for selection
+	 */
+	public void setSelected(boolean selected) {
+		setSelectedImpl(selected);
+		if (group != null && selected) {
+			group.setSelected(this);
+		}
+	}
 
-    /**
-     * This is a helper method to ease the usage of button groups
-     *
-     * @return the name of the group
-     */
-    public String getGroup() {
-        return (String)getClientProperty("$group");
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void released(int x, int y) {
+		// prevent the radio button from being "turned off"
+		if (!isSelected()) {
+			setSelected(true);
+		}
+		super.released(x, y);
+	}
 
-    /**
-     * Places the radio box on the opposite side at the far end
-     *
-     * @return the oppositeSide
-     */
-    public boolean isOppositeSide() {
-        return oppositeSide;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void paint(Graphics g) {
+		if (isToggle()) {
+			UIManager.getInstance().getLookAndFeel().drawButton(g, this);
+		} else {
+			UIManager.getInstance().getLookAndFeel().drawRadioButton(g, this);
+		}
+	}
 
-    /**
-     * Places the radio box on the opposite side at the far end
-     *
-     * @param oppositeSide the oppositeSide to set
-     */
-    public void setOppositeSide(boolean oppositeSide) {
-        this.oppositeSide = oppositeSide;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	protected Dimension calcPreferredSize() {
+		return UIManager.getInstance().getLookAndFeel().getRadioButtonPreferredSize(this);
+	}
+
+	/**
+	 * Setting a new button group
+	 * 
+	 * @param group
+	 *            a new button group
+	 */
+	void setButtonGroup(ButtonGroup group) {
+		this.group = group;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	void fireActionEvent() {
+		if (group != null) {
+			group.setSelected(this);
+		}
+		super.fireActionEvent();
+	}
+
+	/**
+	 * This is a helper method to ease the usage of button groups
+	 * 
+	 * @param groupName
+	 *            a name for the goup
+	 */
+	public void setGroup(String groupName) {
+		putClientProperty("$group", groupName);
+		initNamedGroup();
+	}
+
+	void initComponentImpl() {
+		super.initComponentImpl();
+		initNamedGroup();
+	}
+
+	private void updateSide() {
+		Boolean v = UIManager.getInstance().isThemeConstant("radioOppositeSideBool");
+		if (v != null) {
+			oppositeSide = v.booleanValue();
+		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public void refreshTheme() {
+		super.refreshTheme();
+		updateSide();
+	}
+
+	private void initNamedGroup() {
+		if (isInitialized()) {
+			String s = getGroup();
+			if (s != null) {
+				Form f = getComponentForm();
+				ButtonGroup b = (ButtonGroup) f.getClientProperty("$radio" + s);
+				if (b == null) {
+					b = new ButtonGroup();
+					f.putClientProperty("$radio" + s, b);
+				}
+				b.add(this);
+			}
+		}
+	}
+
+	/**
+	 * This is a helper method to ease the usage of button groups
+	 * 
+	 * @return the name of the group
+	 */
+	public String getGroup() {
+		return (String) getClientProperty("$group");
+	}
+
+	/**
+	 * Places the radio box on the opposite side at the far end
+	 * 
+	 * @return the oppositeSide
+	 */
+	public boolean isOppositeSide() {
+		return oppositeSide;
+	}
+
+	/**
+	 * Places the radio box on the opposite side at the far end
+	 * 
+	 * @param oppositeSide
+	 *            the oppositeSide to set
+	 */
+	public void setOppositeSide(boolean oppositeSide) {
+		this.oppositeSide = oppositeSide;
+	}
 }

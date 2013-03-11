@@ -26,21 +26,22 @@ package com.sun.lwuit;
 import com.sun.lwuit.geom.*;
 
 /**
- * Painter can be used to draw on components backgrounds. 
- * The use of such painter allows reuse of a background painters for various 
- * components. 
- * Note in order to view the painter drawing, component need to have some level
- * of transparency.
+ * Painter can be used to draw on components backgrounds. The use of such
+ * painter allows reuse of a background painters for various components. Note in
+ * order to view the painter drawing, component need to have some level of
+ * transparency.
  * 
  * @author Chen Fishbein
  */
 public interface Painter {
 
-    /**
-     * Draws inside the given rectangle clipping area.
-     * 
-     * @param g the {@link Graphics} object
-     * @param rect the given rectangle cliping area
-     */
-    public void paint(Graphics g, Rectangle rect);
+	/**
+	 * Draws inside the given rectangle clipping area.
+	 * 
+	 * @param g
+	 *            the {@link Graphics} object
+	 * @param rect
+	 *            the given rectangle cliping area
+	 */
+	public void paint(Graphics g, Rectangle rect);
 }

@@ -29,10 +29,10 @@ import com.sun.lwuit.tree.TreeModel;
 import java.util.Vector;
 
 /**
- * A tree model representing the file system as a whole, notice that this class returns absolute
- * file names which would result in an unreadable tree. To fix this you can create a Tree object
- * and override functionality such as the childToDisplayLabel method like this:
- * <code>
+ * A tree model representing the file system as a whole, notice that this class
+ * returns absolute file names which would result in an unreadable tree. To fix
+ * this you can create a Tree object and override functionality such as the
+ * childToDisplayLabel method like this: <code>
         Tree fileTree = new Tree(new FileTreeModel(true)) {
             protected String childToDisplayLabel(Object child) {
                 if (((String) child).endsWith("/")) {
@@ -42,59 +42,60 @@ import java.util.Vector;
             }
         };
    </code>
- *
+ * 
  * @author Shai Almog
  */
 public class FileTreeModel implements TreeModel {
-    private boolean showFiles;
+	private boolean showFiles;
 
-    /**
-     * Construct a filesystem tree model
-     *
-     * @param showFiles indicates whether this is a directory only view or a whole filesystem view
-     */
-    public FileTreeModel(boolean showFiles) {
-        this.showFiles = showFiles;
-    }
+	/**
+	 * Construct a filesystem tree model
+	 * 
+	 * @param showFiles
+	 *            indicates whether this is a directory only view or a whole
+	 *            filesystem view
+	 */
+	public FileTreeModel(boolean showFiles) {
+		this.showFiles = showFiles;
+	}
 
+	/**
+	 * @inheritDoc
+	 */
+	public Vector getChildren(Object parent) {
+		Vector response = new Vector();
+		try {
+			if (parent == null) {
+				String[] roots = FileSystemStorage.getInstance().getRoots();
+				for (int iter = 0; iter < roots.length; iter++) {
+					response.addElement(roots[iter]);
+				}
+			} else {
+				String name = (String) parent;
+				String[] res = FileSystemStorage.getInstance().listFiles(name);
+				if (showFiles) {
+					for (int iter = 0; iter < res.length; iter++) {
+						response.addElement(name + res[iter]);
+					}
+				} else {
+					for (int iter = 0; iter < res.length; iter++) {
+						if (FileSystemStorage.getInstance().isDirectory(name + res[iter])) {
+							response.addElement(name + res[iter]);
+						}
+					}
+				}
+			}
+		} catch (Throwable err) {
+			err.printStackTrace();
+			return new Vector();
+		}
+		return response;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public Vector getChildren(Object parent) {
-        Vector response = new Vector();
-        try {
-            if(parent == null) {
-                String[] roots = FileSystemStorage.getInstance().getRoots();
-                for(int iter = 0 ; iter < roots.length ; iter++) {
-                    response.addElement(roots[iter]);
-                }
-            } else {
-                String name = (String)parent;
-                String[] res = FileSystemStorage.getInstance().listFiles(name);
-                if(showFiles) {
-                    for(int iter = 0 ; iter < res.length ; iter++) {
-                        response.addElement(name + res[iter]);
-                    }
-                } else {
-                    for(int iter = 0 ; iter < res.length ; iter++) {
-                        if(FileSystemStorage.getInstance().isDirectory(name + res[iter])) {
-                            response.addElement(name + res[iter]);
-                        }
-                    }
-                }
-            }
-        } catch(Throwable err) {
-            err.printStackTrace();
-            return new Vector();
-        }
-        return response;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public boolean isLeaf(Object node) {
-        return !FileSystemStorage.getInstance().isDirectory((String)node);
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public boolean isLeaf(Object node) {
+		return !FileSystemStorage.getInstance().isDirectory((String) node);
+	}
 }

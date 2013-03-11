@@ -26,22 +26,26 @@ package com.sun.lwuit.events;
 import com.sun.lwuit.Component;
 
 /**
- * Observes focus change events for a given form and invokes the callbacks to 
+ * Observes focus change events for a given form and invokes the callbacks to
  * enable us to assign functionality based on current focused component.
- *
+ * 
  * @author Chen Fishbein
  */
 public interface FocusListener {
-    
-    /**
-     * Invoked when component gains focus
-     * @param cmp the component that gains focus
-     */
-    public void focusGained(Component cmp);
-    
-    /**
-     * Invoked when component loses focus
-     * @param cmp the component that lost focus
-     */
-    public void focusLost(Component cmp);
+
+	/**
+	 * Invoked when component gains focus
+	 * 
+	 * @param cmp
+	 *            the component that gains focus
+	 */
+	public void focusGained(Component cmp);
+
+	/**
+	 * Invoked when component loses focus
+	 * 
+	 * @param cmp
+	 *            the component that lost focus
+	 */
+	public void focusLost(Component cmp);
 }

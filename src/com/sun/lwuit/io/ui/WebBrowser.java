@@ -23,20 +23,21 @@
  */
 
 package com.sun.lwuit.io.ui;
+
 import com.sun.lwuit.html.HTMLComponent;
 import com.sun.lwuit.io.html.AsyncDocumentRequestHandlerImpl;
 
 /**
  * An HTML component that supports HTTP/file protocol by default
- *
+ * 
  * @author Shai Almog
  */
 public class WebBrowser extends HTMLComponent {
-    /**
-     * Default constructor
-     */
-    public WebBrowser() {
-        super(new AsyncDocumentRequestHandlerImpl());
-        setUIID("WebBrowser");
-    }
+	/**
+	 * Default constructor
+	 */
+	public WebBrowser() {
+		super(new AsyncDocumentRequestHandlerImpl());
+		setUIID("WebBrowser");
+	}
 }

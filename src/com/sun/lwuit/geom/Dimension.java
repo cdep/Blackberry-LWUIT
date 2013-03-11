@@ -24,103 +24,107 @@
 package com.sun.lwuit.geom;
 
 /**
- * Utility class that holds a width and height that represents a dimension of 
- * a component or element
+ * Utility class that holds a width and height that represents a dimension of a
+ * component or element
  * 
  * @author Nir Shabi
  */
 public class Dimension {
-    
-    private int width;
-    
-    private int height;
 
-    /**
-     * Creates a new instance of Dimension
-     */
-    public Dimension() {
-    }
+	private int width;
 
-    /**
-     * Creates a new instance of Dimension with a predefine dimension
-     * 
-     * @param d Dimension to copy
-     */
-    public Dimension(Dimension d) {
-        this.width = d.width;
-        this.height = d.height;
-    }
+	private int height;
 
-    /**
-     * CCreates a new instance of Dimension with width and height
-     * 
-     * @param width the dimention width
-     * @param height the dimention height
-     */
-    public Dimension(int width, int height) {
-        this.width = width;
-        this.height = height;
-    }
+	/**
+	 * Creates a new instance of Dimension
+	 */
+	public Dimension() {
+	}
 
-    /**
-     * Set the width of the dimension
-     * 
-     * @param width the dimention width
-     */
-    public void setWidth(int width) {
-        this.width = width;
-    }
+	/**
+	 * Creates a new instance of Dimension with a predefine dimension
+	 * 
+	 * @param d
+	 *            Dimension to copy
+	 */
+	public Dimension(Dimension d) {
+		this.width = d.width;
+		this.height = d.height;
+	}
 
-    /**
-     * Set the height of the dimension
-     * 
-     * @param height the dimention height
-     */
-    public void setHeight(int height) {
-        this.height = height;
-    }
+	/**
+	 * CCreates a new instance of Dimension with width and height
+	 * 
+	 * @param width
+	 *            the dimention width
+	 * @param height
+	 *            the dimention height
+	 */
+	public Dimension(int width, int height) {
+		this.width = width;
+		this.height = height;
+	}
 
-    /**
-     * Returns the width of the dimension
-     * 
-     * @return width of the dimension
-     */
-    public int getWidth() {
-        return width;
-    }
+	/**
+	 * Set the width of the dimension
+	 * 
+	 * @param width
+	 *            the dimention width
+	 */
+	public void setWidth(int width) {
+		this.width = width;
+	}
 
-   /**
-    * Return the height of the dimension
-    * 
-    * @return height of the dimension
-    */
-    public int getHeight() {
-        return height;
-    }
+	/**
+	 * Set the height of the dimension
+	 * 
+	 * @param height
+	 *            the dimention height
+	 */
+	public void setHeight(int height) {
+		this.height = height;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public String toString() {
-        return "width = " + width + " height = " +height;
-    }
+	/**
+	 * Returns the width of the dimension
+	 * 
+	 * @return width of the dimension
+	 */
+	public int getWidth() {
+		return width;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public int hashCode() {
-        int hash = 3;
-        hash = 71 * hash + this.width;
-        hash = 71 * hash + this.height;
-        return hash;
-    }
+	/**
+	 * Return the height of the dimension
+	 * 
+	 * @return height of the dimension
+	 */
+	public int getHeight() {
+		return height;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public boolean equals(Object arg0) {
-        return arg0 != null && ((Dimension)arg0).width == width && ((Dimension)arg0).height == height;
-    }
-    
-    
+	/**
+	 * @inheritDoc
+	 */
+	public String toString() {
+		return "width = " + width + " height = " + height;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public int hashCode() {
+		int hash = 3;
+		hash = 71 * hash + this.width;
+		hash = 71 * hash + this.height;
+		return hash;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public boolean equals(Object arg0) {
+		return arg0 != null && ((Dimension) arg0).width == width && ((Dimension) arg0).height == height;
+	}
+
 }

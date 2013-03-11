@@ -32,110 +32,110 @@ import java.util.Date;
 
 /**
  * Represents a date model for the spinner
- *
+ * 
  * @author Shai Almog
  */
 class SpinnerDateModel implements ListModel {
-    private EventDispatcher dataListener = new EventDispatcher();
-    private EventDispatcher selectionListener = new EventDispatcher();
-    private long min;
-    private long max;
-    private long currentValue;
+	private EventDispatcher dataListener = new EventDispatcher();
+	private EventDispatcher selectionListener = new EventDispatcher();
+	private long min;
+	private long max;
+	private long currentValue;
 
-    private static final long DAY = 24 * 60 * 60 * 1000;
+	private static final long DAY = 24 * 60 * 60 * 1000;
 
-    void setValue(Date value) {
-        currentValue = value.getTime();
-    }
+	void setValue(Date value) {
+		currentValue = value.getTime();
+	}
 
-    Object getValue() {
-        return new Date(currentValue);
-    }
+	Object getValue() {
+		return new Date(currentValue);
+	}
 
-    /**
-     * Indicates the range of the spinner
-     * 
-     * @param min lowest value allowed
-     * @param max maximum value allowed
-     * @param currentValue the starting value for the mode
-     */
-    public SpinnerDateModel(long min, long max, long currentValue) {
-        this.max = max;
-        this.min = min;
-        this.currentValue = currentValue;
-    }
+	/**
+	 * Indicates the range of the spinner
+	 * 
+	 * @param min
+	 *            lowest value allowed
+	 * @param max
+	 *            maximum value allowed
+	 * @param currentValue
+	 *            the starting value for the mode
+	 */
+	public SpinnerDateModel(long min, long max, long currentValue) {
+		this.max = max;
+		this.min = min;
+		this.currentValue = currentValue;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public Object getItemAt(int index) {
-        return new Date(min + DAY * index);
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public Object getItemAt(int index) {
+		return new Date(min + DAY * index);
+	}
 
+	/**
+	 * @inheritDoc
+	 */
+	public int getSize() {
+		return (int) ((max - min) / DAY);
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public int getSize() {
-        return (int)((max - min) / DAY);
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public int getSelectedIndex() {
+		return (int) ((currentValue - min) / DAY);
+	}
 
+	/**
+	 * @inheritDoc
+	 */
+	public void setSelectedIndex(int index) {
+		int oldIndex = getSelectedIndex();
+		currentValue = min + (index * DAY);
+		int newIndex = getSelectedIndex();
+		selectionListener.fireSelectionEvent(oldIndex, newIndex);
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public int getSelectedIndex() {
-        return (int)((currentValue - min) / DAY);
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void addDataChangedListener(DataChangedListener l) {
+		dataListener.addListener(l);
+	}
 
+	/**
+	 * @inheritDoc
+	 */
+	public void removeDataChangedListener(DataChangedListener l) {
+		dataListener.removeListener(l);
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void setSelectedIndex(int index) {
-        int oldIndex = getSelectedIndex();
-        currentValue = min + (index * DAY);
-        int newIndex = getSelectedIndex();
-        selectionListener.fireSelectionEvent(oldIndex, newIndex);
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void addSelectionListener(SelectionListener l) {
+		selectionListener.addListener(l);
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void addDataChangedListener(DataChangedListener l) {
-        dataListener.addListener(l);
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void removeSelectionListener(SelectionListener l) {
+		selectionListener.removeListener(l);
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void removeDataChangedListener(DataChangedListener l) {
-        dataListener.removeListener(l);
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void addItem(Object item) {
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void addSelectionListener(SelectionListener l) {
-        selectionListener.addListener(l);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public void removeSelectionListener(SelectionListener l) {
-        selectionListener.removeListener(l);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public void addItem(Object item) {
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public void removeItem(int index) {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void removeItem(int index) {
+	}
 }

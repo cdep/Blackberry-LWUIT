@@ -27,252 +27,256 @@ import com.sun.lwuit.geom.Dimension;
 import com.sun.lwuit.geom.Rectangle;
 
 /**
- * A peer component is essentially a "dummy" LWUIT component used to calculate the position
- * of the actual native platform specific component. The behavior of a peer component is
- * very platform specific, it is meant for platforms where a native component can be
- * integrated with a LWUIT component.
- * LWUIT features such as glass pane, z-ordering, dialogs &amp; menus might not work
- * as expected in all situations where peer components are involved. E.g. a peer component
- * might hide itself when a menu/dialog is shown and recreate itself when it is hidden/disposed.
- *
+ * A peer component is essentially a "dummy" LWUIT component used to calculate
+ * the position of the actual native platform specific component. The behavior
+ * of a peer component is very platform specific, it is meant for platforms
+ * where a native component can be integrated with a LWUIT component. LWUIT
+ * features such as glass pane, z-ordering, dialogs &amp; menus might not work
+ * as expected in all situations where peer components are involved. E.g. a peer
+ * component might hide itself when a menu/dialog is shown and recreate itself
+ * when it is hidden/disposed.
+ * 
  * @author Shai Almog
  */
 public class PeerComponent extends Component {
-    private Object nativePeer;
-    private Rectangle lastPos = new Rectangle(-1, -1, -1, -1);
+	private Object nativePeer;
+	private Rectangle lastPos = new Rectangle(-1, -1, -1, -1);
 
-    /**
-     * This constructor is used by the platform implementation to create instances
-     * of this class use the static create method.
-     *
-     * @param nativePeer the native platform specific peer component.
-     */
-    protected PeerComponent(Object nativePeer) {
-        this.nativePeer = nativePeer;
-    }
+	/**
+	 * This constructor is used by the platform implementation to create
+	 * instances of this class use the static create method.
+	 * 
+	 * @param nativePeer
+	 *            the native platform specific peer component.
+	 */
+	protected PeerComponent(Object nativePeer) {
+		this.nativePeer = nativePeer;
+	}
 
-    /**
-     * Use this method to encapsulate a native UI object
-     *
-     * @param nativePeer the native platform specific peer component.
-     */
-    public static PeerComponent create(Object nativePeer) {
-        return Display.getInstance().getImplementation().createNativePeer(nativePeer);
-    }
+	/**
+	 * Use this method to encapsulate a native UI object
+	 * 
+	 * @param nativePeer
+	 *            the native platform specific peer component.
+	 */
+	public static PeerComponent create(Object nativePeer) {
+		return Display.getInstance().getImplementation().createNativePeer(nativePeer);
+	}
 
-    /**
-     * Returns the native peer instance
-     *
-     * @return the native peer
-     */
-    public Object getNativePeer() {
-        return nativePeer;
-    }
+	/**
+	 * Returns the native peer instance
+	 * 
+	 * @return the native peer
+	 */
+	public Object getNativePeer() {
+		return nativePeer;
+	}
 
-    void setNativePeer(Object nativePeer) {
-        this.nativePeer = nativePeer;
-    }
+	void setNativePeer(Object nativePeer) {
+		this.nativePeer = nativePeer;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public boolean animate() {
-        return false;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public boolean animate() {
+		return false;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    protected Dimension calcPreferredSize() {
-        return super.calcPreferredSize();
-    }
+	/**
+	 * @inheritDoc
+	 */
+	protected Dimension calcPreferredSize() {
+		return super.calcPreferredSize();
+	}
 
-    /**
-     * @inheritDoc
-     */
-    protected Dimension calcScrollSize() {
-        return super.calcScrollSize();
-    }
+	/**
+	 * @inheritDoc
+	 */
+	protected Dimension calcScrollSize() {
+		return super.calcScrollSize();
+	}
 
-    /**
-     * @inheritDoc
-     */
-    protected void deinitialize() {
-        super.deinitialize();
-    }
+	/**
+	 * @inheritDoc
+	 */
+	protected void deinitialize() {
+		super.deinitialize();
+	}
 
-    /**
-     * @inheritDoc
-     */
-    protected void fireClicked() {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	protected void fireClicked() {
+	}
 
-    /**
-     * @inheritDoc
-     */
-    protected void focusGained() {
-        super.focusGained();
-    }
+	/**
+	 * @inheritDoc
+	 */
+	protected void focusGained() {
+		super.focusGained();
+	}
 
-    /**
-     * @inheritDoc
-     */
-    protected void focusLost() {
-        super.focusLost();
-    }
+	/**
+	 * @inheritDoc
+	 */
+	protected void focusLost() {
+		super.focusLost();
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public boolean handlesInput() {
-        return super.handlesInput();
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public boolean handlesInput() {
+		return super.handlesInput();
+	}
 
-    /**
-     * @inheritDoc
-     */
-    protected void initComponent() {
-        super.initComponent();
-    }
+	/**
+	 * @inheritDoc
+	 */
+	protected void initComponent() {
+		super.initComponent();
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public boolean isBorderPainted() {
-        return false;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public boolean isBorderPainted() {
+		return false;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void keyPressed(int keyCode) {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void keyPressed(int keyCode) {
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void keyReleased(int keyCode) {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void keyReleased(int keyCode) {
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void keyRepeated(int keyCode) {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void keyRepeated(int keyCode) {
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void paint(Graphics g) {
-        int scrollX = getScrollX();
-        int scrollY = getScrollY();
-        int x = getAbsoluteX() + scrollX;
-        int y = getAbsoluteY() + scrollY;
-        if(x != lastPos.getX() || y != lastPos.getY() || getWidth() != lastPos.getSize().getWidth() || getHeight() != lastPos.getSize().getHeight()) {
-            lastPos.setX(x);
-            lastPos.setY(y);
-            lastPos.getSize().setWidth(getWidth());
-            lastPos.getSize().setHeight(getHeight());
-            onPositionSizeChange();
-        }
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void paint(Graphics g) {
+		int scrollX = getScrollX();
+		int scrollY = getScrollY();
+		int x = getAbsoluteX() + scrollX;
+		int y = getAbsoluteY() + scrollY;
+		if (x != lastPos.getX() || y != lastPos.getY() || getWidth() != lastPos.getSize().getWidth() || getHeight() != lastPos.getSize().getHeight()) {
+			lastPos.setX(x);
+			lastPos.setY(y);
+			lastPos.getSize().setWidth(getWidth());
+			lastPos.getSize().setHeight(getHeight());
+			onPositionSizeChange();
+		}
+	}
 
-    /**
-     * @inheritDoc
-     */
-    protected void paintBackground(Graphics g) {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	protected void paintBackground(Graphics g) {
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void paintBackgrounds(Graphics g) {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void paintBackgrounds(Graphics g) {
+	}
 
-    /**
-     * @inheritDoc
-     */
-    protected void paintBorder(Graphics g) {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	protected void paintBorder(Graphics g) {
+	}
 
-    /**
-     * @inheritDoc
-     */
-    protected void paintScrollbarX(Graphics g) {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	protected void paintScrollbarX(Graphics g) {
+	}
 
-    /**
-     * @inheritDoc
-     */
-    protected void paintScrollbarY(Graphics g) {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	protected void paintScrollbarY(Graphics g) {
+	}
 
-    /**
-     * @inheritDoc
-     */
-    protected void paintScrollbars(Graphics g) {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	protected void paintScrollbars(Graphics g) {
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void pointerDragged(int[] x, int[] y) {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void pointerDragged(int[] x, int[] y) {
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void pointerDragged(int x, int y) {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void pointerDragged(int x, int y) {
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void pointerHover(int[] x, int[] y) {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void pointerHover(int[] x, int[] y) {
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void pointerHoverReleased(int[] x, int[] y) {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void pointerHoverReleased(int[] x, int[] y) {
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void pointerPressed(int[] x, int[] y) {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void pointerPressed(int[] x, int[] y) {
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void pointerPressed(int x, int y) {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void pointerPressed(int x, int y) {
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void pointerReleased(int[] x, int[] y) {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void pointerReleased(int[] x, int[] y) {
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void pointerReleased(int x, int y) {
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void pointerReleased(int x, int y) {
+	}
 
-    /**
-     * Updates the size of the component from the native widget
-     */
-    public void invalidate() {
-        setShouldCalcPreferredSize(true);
-        getComponentForm().revalidate();
-    }
+	/**
+	 * Updates the size of the component from the native widget
+	 */
+	public void invalidate() {
+		setShouldCalcPreferredSize(true);
+		getComponentForm().revalidate();
+	}
 
-    /**
-     * Callback useful for sublclasses that need to track the change in size/position
-     * of the component (notice that this might be invoked too many times for a single change)!
-     */
-    protected void onPositionSizeChange() {
-    }
+	/**
+	 * Callback useful for sublclasses that need to track the change in
+	 * size/position of the component (notice that this might be invoked too
+	 * many times for a single change)!
+	 */
+	protected void onPositionSizeChange() {
+	}
 }

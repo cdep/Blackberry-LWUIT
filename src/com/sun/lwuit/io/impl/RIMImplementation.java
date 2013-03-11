@@ -31,112 +31,112 @@ import net.rim.device.api.servicebook.ServiceBook;
 import net.rim.device.api.servicebook.ServiceRecord;
 
 /**
- * Implementation targeting RIM devices to support their IAP and elaborate network
- * picking policy described 
- *
+ * Implementation targeting RIM devices to support their IAP and elaborate
+ * network picking policy described
+ * 
  * @author Shai Almog
  */
 public class RIMImplementation extends MIDPImpl {
-    private String currentAccessPoint;
-    private boolean deviceSide;
+	private String currentAccessPoint;
+	private boolean deviceSide;
 
-    /**
-     * @inheritDoc
-     */
-    public boolean isAPSupported() {
-        return true;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public boolean isAPSupported() {
+		return true;
+	}
 
-    private Vector getValidSBEntries() {
-        Vector v = new Vector();
-        ServiceBook bk = ServiceBook.getSB();
-        ServiceRecord[] recs = bk.getRecords();
-        for(int iter = 0 ; iter < recs.length ; iter++) {
-            ServiceRecord sr = recs[iter];
-            if (sr.isValid() && !sr.isDisabled() && sr.getUid() != null
-                        && sr.getUid().length() != 0) {
-                v.addElement(sr);
-            }
-        }
-        return v;
-    }
+	private Vector getValidSBEntries() {
+		Vector v = new Vector();
+		ServiceBook bk = ServiceBook.getSB();
+		ServiceRecord[] recs = bk.getRecords();
+		for (int iter = 0; iter < recs.length; iter++) {
+			ServiceRecord sr = recs[iter];
+			if (sr.isValid() && !sr.isDisabled() && sr.getUid() != null
+					&& sr.getUid().length() != 0) {
+				v.addElement(sr);
+			}
+		}
+		return v;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public String[] getAPIds() {
-        Vector v = getValidSBEntries();
-        String[] s = new String[v.size()];
-        for (int iter = 0; iter < s.length ; iter++) {
-            s[iter] = "" + ((ServiceRecord)v.elementAt(iter)).getUid();
-        }
-        return s;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public String[] getAPIds() {
+		Vector v = getValidSBEntries();
+		String[] s = new String[v.size()];
+		for (int iter = 0; iter < s.length; iter++) {
+			s[iter] = "" + ((ServiceRecord) v.elementAt(iter)).getUid();
+		}
+		return s;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public int getAPType(String id) {
-        Vector v = getValidSBEntries();
-        for (int iter = 0; iter < v.size(); iter++) {
-            ServiceRecord r = (ServiceRecord)v.elementAt(iter);
-            if(("" + r.getUid()).equals(id)) {
-                if(r.getUid().toLowerCase().indexOf("wifi") > -1) {
-                    return NetworkManager.ACCESS_POINT_TYPE_WLAN;
-                }
-                // wap2
-                if(r.getCid().toLowerCase().indexOf("wptcp") > -1) {
-                    return NetworkManager.ACCESS_POINT_TYPE_NETWORK3G;
-                }
-                return NetworkManager.ACCESS_POINT_TYPE_UNKNOWN;
-            }
-        }
-        return NetworkManager.ACCESS_POINT_TYPE_UNKNOWN;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public int getAPType(String id) {
+		Vector v = getValidSBEntries();
+		for (int iter = 0; iter < v.size(); iter++) {
+			ServiceRecord r = (ServiceRecord) v.elementAt(iter);
+			if (("" + r.getUid()).equals(id)) {
+				if (r.getUid().toLowerCase().indexOf("wifi") > -1) {
+					return NetworkManager.ACCESS_POINT_TYPE_WLAN;
+				}
+				// wap2
+				if (r.getCid().toLowerCase().indexOf("wptcp") > -1) {
+					return NetworkManager.ACCESS_POINT_TYPE_NETWORK3G;
+				}
+				return NetworkManager.ACCESS_POINT_TYPE_UNKNOWN;
+			}
+		}
+		return NetworkManager.ACCESS_POINT_TYPE_UNKNOWN;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public String getAPName(String id) {
-        Vector v = getValidSBEntries();
-        for (int iter = 0; iter < v.size() ; iter++) {
-            ServiceRecord r = (ServiceRecord)v.elementAt(iter);
-            if(("" + r.getUid()).equals(id)) {
-                return r.getName();
-            }
-        }
-        return null;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public String getAPName(String id) {
+		Vector v = getValidSBEntries();
+		for (int iter = 0; iter < v.size(); iter++) {
+			ServiceRecord r = (ServiceRecord) v.elementAt(iter);
+			if (("" + r.getUid()).equals(id)) {
+				return r.getName();
+			}
+		}
+		return null;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public String getCurrentAccessPoint() {
-        if(currentAccessPoint != null) {
-            return currentAccessPoint;
-        }
-        return null;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public String getCurrentAccessPoint() {
+		if (currentAccessPoint != null) {
+			return currentAccessPoint;
+		}
+		return null;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void setCurrentAccessPoint(String id) {
-        currentAccessPoint = id;
-        int t = getAPType(id);
-        deviceSide = t == NetworkManager.ACCESS_POINT_TYPE_NETWORK3G || t == NetworkManager.ACCESS_POINT_TYPE_WLAN;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void setCurrentAccessPoint(String id) {
+		currentAccessPoint = id;
+		int t = getAPType(id);
+		deviceSide = t == NetworkManager.ACCESS_POINT_TYPE_NETWORK3G || t == NetworkManager.ACCESS_POINT_TYPE_WLAN;
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public Object connect(String url, boolean read, boolean write) throws IOException {
-        if(currentAccessPoint != null) {
-            url += ";ConnectionUID=" + currentAccessPoint;
-            if(deviceSide) {
-                url += ";deviceside=true";
-            }
-        }
-        return super.connect(url, read, write);
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public Object connect(String url, boolean read, boolean write) throws IOException {
+		if (currentAccessPoint != null) {
+			url += ";ConnectionUID=" + currentAccessPoint;
+			if (deviceSide) {
+				url += ";deviceside=true";
+			}
+		}
+		return super.connect(url, read, write);
+	}
 }

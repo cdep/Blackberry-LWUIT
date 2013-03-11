@@ -26,21 +26,27 @@ package com.sun.lwuit.html;
 import java.io.InputStream;
 
 /**
- * The DocumentRequestHandler interface should be implemented so it returns documents in requested URLs.<br>
- * Concrete classes should handle in its single method all necessary networking and IO issues.<br>
- * Implementations of this interface are used by HTMLComponent to obtain links and form results<br>
+ * The DocumentRequestHandler interface should be implemented so it returns
+ * documents in requested URLs.<br>
+ * Concrete classes should handle in its single method all necessary networking
+ * and IO issues.<br>
+ * Implementations of this interface are used by HTMLComponent to obtain links
+ * and form results<br>
  * 
  * @author Ofir Leitner
  */
 public interface DocumentRequestHandler {
 
-    /**
-     * Implementations should return the document in the requested url as an InputStream
-     * This is triggered only for the main document requested and not for its resources.
-     *
-     * @param docInfo A DocumentInfo object representing the requested URL and its attributes
-     * @return the document at the URL as an InputStream
-     */
-    public InputStream resourceRequested(DocumentInfo docInfo);
+	/**
+	 * Implementations should return the document in the requested url as an
+	 * InputStream This is triggered only for the main document requested and
+	 * not for its resources.
+	 * 
+	 * @param docInfo
+	 *            A DocumentInfo object representing the requested URL and its
+	 *            attributes
+	 * @return the document at the URL as an InputStream
+	 */
+	public InputStream resourceRequested(DocumentInfo docInfo);
 
 }

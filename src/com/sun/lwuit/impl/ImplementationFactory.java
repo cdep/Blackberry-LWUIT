@@ -30,50 +30,51 @@ import com.sun.lwuit.impl.blackberry.BlackBerryImplementation;
 //#endif
 
 /**
- * Generic class allowing 3rd parties to replace the underlying implementation in
- * LWUIT seamlessly. The factory can be replaced by 3rd parties to install a new
- * underlying implementation using elaborate logic. 
- *
+ * Generic class allowing 3rd parties to replace the underlying implementation
+ * in LWUIT seamlessly. The factory can be replaced by 3rd parties to install a
+ * new underlying implementation using elaborate logic.
+ * 
  * @author Shai Almog, Thorsten Schemm
  */
 public class ImplementationFactory {
-    private static ImplementationFactory instance = new ImplementationFactory();
-    
-    /**
-     * Allows third parties to replace the implementation factory
-     */
-    protected ImplementationFactory() {
-    }
-    
-    /**
-     * Returns the singleton instance of this class
-     * 
-     * @return instanceof Implementation factory
-     */
-    public static ImplementationFactory getInstance() {
-        return instance;
-    }
-    
-    /**
-     * Install a new implementation factory this method is invoked by implementors
-     * to replace a factory.
-     * 
-     * @param i implementation factory instance
-     */
-    public static void setInstance(ImplementationFactory i) {
-        instance = i;
-    }
-    
-    /**
-     * Factory method to create the implementation instance
-     * 
-     * @return a newly created implementation instance
-     */
-    public LWUITImplementation createImplementation() {
-        //#ifdef touch
-//#     return new BlackBerryTouchImplementation();
-        //#else
-        return new BlackBerryImplementation();
-        //#endif
-    }
+	private static ImplementationFactory instance = new ImplementationFactory();
+
+	/**
+	 * Allows third parties to replace the implementation factory
+	 */
+	protected ImplementationFactory() {
+	}
+
+	/**
+	 * Returns the singleton instance of this class
+	 * 
+	 * @return instanceof Implementation factory
+	 */
+	public static ImplementationFactory getInstance() {
+		return instance;
+	}
+
+	/**
+	 * Install a new implementation factory this method is invoked by
+	 * implementors to replace a factory.
+	 * 
+	 * @param i
+	 *            implementation factory instance
+	 */
+	public static void setInstance(ImplementationFactory i) {
+		instance = i;
+	}
+
+	/**
+	 * Factory method to create the implementation instance
+	 * 
+	 * @return a newly created implementation instance
+	 */
+	public LWUITImplementation createImplementation() {
+		// #ifdef touch
+		// # return new BlackBerryTouchImplementation();
+		// #else
+		return new BlackBerryImplementation();
+		// #endif
+	}
 }

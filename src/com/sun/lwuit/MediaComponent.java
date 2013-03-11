@@ -30,144 +30,149 @@ import com.sun.lwuit.impl.LWUITImplementation;
  * A component allowing us to embed and control rich media content
  * 
  * @author Nir Shabi
- * @deprecated replaced by VideoComponent, this class will be removed in the next
- * version of LWUIT
+ * @deprecated replaced by VideoComponent, this class will be removed in the
+ *             next version of LWUIT
  */
 public class MediaComponent extends Component {
 
-    private Object player;
-    private Object vidc;
-    private boolean fullscreen = false;
+	private Object player;
+	private Object vidc;
+	private boolean fullscreen = false;
 
-    /** 
-     * Creates a new instance of MediaComponent 
-     * 
-     * @param player the media player
-     */
-    public MediaComponent(Object player) {
-        this.player = player;
-        setFocusable(false);
-        vidc = Display.getInstance().getImplementation().createVideoComponent(player);
+	/**
+	 * Creates a new instance of MediaComponent
+	 * 
+	 * @param player
+	 *            the media player
+	 */
+	public MediaComponent(Object player) {
+		this.player = player;
+		setFocusable(false);
+		vidc = Display.getInstance().getImplementation().createVideoComponent(player);
 
-    }
+	}
 
-    /**
-     * @inheritDoc
-     */
-    protected void initComponent() {
-        getComponentForm().registerMediaComponent(this);
-    }
+	/**
+	 * @inheritDoc
+	 */
+	protected void initComponent() {
+		getComponentForm().registerMediaComponent(this);
+	}
 
-    /**
-     * @inheritDoc
-     */
-    protected void deinitialize() {
-        getComponentForm().deregisterMediaComponent(this);
-    }
+	/**
+	 * @inheritDoc
+	 */
+	protected void deinitialize() {
+		getComponentForm().deregisterMediaComponent(this);
+	}
 
-    /**
-     * @inheritDoc
-     */
-    public void paint(Graphics g) { 
-        if(isVisible()){
-            Display.getInstance().getImplementation().paintVideo(this, fullscreen, g.getGraphics(), vidc, player);
-        }
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public void paint(Graphics g) {
+		if (isVisible()) {
+			Display.getInstance().getImplementation().paintVideo(this, fullscreen, g.getGraphics(), vidc, player);
+		}
+	}
 
-    protected void paintBackground(Graphics g) {
-    }
+	protected void paintBackground(Graphics g) {
+	}
 
-    public void paintBackgrounds(Graphics g) {
-    }
+	public void paintBackgrounds(Graphics g) {
+	}
 
-    /**
-     * @inheritDoc
-     */
-    protected Dimension calcPreferredSize() {
-        LWUITImplementation impl = Display.getInstance().getImplementation();
-        return new Dimension(impl.getVideoWidth(vidc), impl.getVideoHeight(vidc));
-    }
+	/**
+	 * @inheritDoc
+	 */
+	protected Dimension calcPreferredSize() {
+		LWUITImplementation impl = Display.getInstance().getImplementation();
+		return new Dimension(impl.getVideoWidth(vidc), impl.getVideoHeight(vidc));
+	}
 
-    /**
-     * Display the embedded media component
-     * 
-     * @param visible true to display, false to hide
-     */
-    public void setVisible(boolean visible) {
-        super.setVisible(visible);
-        if (vidc != null) {
-            Display.getInstance().getImplementation().setVideoVisible(vidc, visible);
-        }
-    }
+	/**
+	 * Display the embedded media component
+	 * 
+	 * @param visible
+	 *            true to display, false to hide
+	 */
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+		if (vidc != null) {
+			Display.getInstance().getImplementation().setVideoVisible(vidc, visible);
+		}
+	}
 
-    /**
-     * Start media playback implicitly setting the component to visible
-     */
-    public void start(){
-        Display.getInstance().getImplementation().startVideo(player, vidc);
-    }
+	/**
+	 * Start media playback implicitly setting the component to visible
+	 */
+	public void start() {
+		Display.getInstance().getImplementation().startVideo(player, vidc);
+	}
 
-    /**
-     * Stope media playback 
-     */
-    public void stop(){
-        Display.getInstance().getImplementation().stopVideo(player, vidc);
-    }
+	/**
+	 * Stope media playback
+	 */
+	public void stop() {
+		Display.getInstance().getImplementation().stopVideo(player, vidc);
+	}
 
-    /**
-     * Set the number of times the media should loop
-     * 
-     * @param count the number of times the media should loop
-     */
-    public void setLoopCount(int count) {
-        Display.getInstance().getImplementation().setVideoLoopCount(player, count);
-    }
+	/**
+	 * Set the number of times the media should loop
+	 * 
+	 * @param count
+	 *            the number of times the media should loop
+	 */
+	public void setLoopCount(int count) {
+		Display.getInstance().getImplementation().setVideoLoopCount(player, count);
+	}
 
-    /**
-     * Return the duration of the media
-     * 
-     * @return the duration of the media
-     */
-    public long getMediaTime() {
-        return Display.getInstance().getImplementation().getMediaTime(player);
-    }
+	/**
+	 * Return the duration of the media
+	 * 
+	 * @return the duration of the media
+	 */
+	public long getMediaTime() {
+		return Display.getInstance().getImplementation().getMediaTime(player);
+	}
 
-    /**
-     * "Jump" to a point in time within the media
-     * 
-     * @param now the point in time to "Jump" to
-     * @return the media time in microseconds
-     */
-    public long setMediaTime(long now) {
-        return Display.getInstance().getImplementation().setMediaTime(player, now);
-    }
+	/**
+	 * "Jump" to a point in time within the media
+	 * 
+	 * @param now
+	 *            the point in time to "Jump" to
+	 * @return the media time in microseconds
+	 */
+	public long setMediaTime(long now) {
+		return Display.getInstance().getImplementation().setMediaTime(player, now);
+	}
 
-    /**
-     * Toggles the fullscreen mode
-     * 
-     * @param fullscreen true for fullscreen mode
-     */
-    public void setFullScreen(boolean fullscreen) {
-        this.fullscreen = fullscreen;
-        repaint();
-    }
+	/**
+	 * Toggles the fullscreen mode
+	 * 
+	 * @param fullscreen
+	 *            true for fullscreen mode
+	 */
+	public void setFullScreen(boolean fullscreen) {
+		this.fullscreen = fullscreen;
+		repaint();
+	}
 
-    /**
-     * Indicates the fullscreen mode
-     *
-     * @return true for fullscreen mode
-     */
-    public boolean isFullScreen() {
-        return fullscreen;
-    }
+	/**
+	 * Indicates the fullscreen mode
+	 * 
+	 * @return true for fullscreen mode
+	 */
+	public boolean isFullScreen() {
+		return fullscreen;
+	}
 
-    /**
-     * Returns the native video control if such a control exists, this is required
-     * for some platforms.
-     *
-     * @return the underlying native video control or null
-     */
-    public Object getVideoControl() {
-        return vidc;
-    }
+	/**
+	 * Returns the native video control if such a control exists, this is
+	 * required for some platforms.
+	 * 
+	 * @return the underlying native video control or null
+	 */
+	public Object getVideoControl() {
+		return vidc;
+	}
 }

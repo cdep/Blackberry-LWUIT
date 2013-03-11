@@ -41,185 +41,194 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 /**
- * This is a utility class that allows Oauth2 authentication
- * This utility uses the LWUIT XHTML Component to display the authentication
- * pages.
+ * This is a utility class that allows Oauth2 authentication This utility uses
+ * the LWUIT XHTML Component to display the authentication pages.
  * http://tools.ietf.org/pdf/draft-ietf-oauth-v2-12.pdf
- *
+ * 
  * @author Chen Fishbein
  */
 public class Oauth2 {
 
-    public static final String TOKEN = "access_token";
-    private String token;
-    private String clientId;
-    private String redirectURI;
-    private String scope;
-    private String OauthURL;
+	public static final String TOKEN = "access_token";
+	private String token;
+	private String clientId;
+	private String redirectURI;
+	private String scope;
+	private String OauthURL;
 
-    private Hashtable additionalParams;
+	private Hashtable additionalParams;
 
-    private IOException error;
+	private IOException error;
 
-    /**
-     * Simple constructor
-     *
-     * @param OauthURL the authentication url of the service
-     * @param clientId the client id that would like to use the service
-     * @param redirectURI the redirect uri
-     * @param scope the authentication scope
-     */
-    public Oauth2(String OauthURL, String clientId, String redirectURI, String scope) {
-        this(OauthURL, clientId, redirectURI, scope, null);
-    }
+	/**
+	 * Simple constructor
+	 * 
+	 * @param OauthURL
+	 *            the authentication url of the service
+	 * @param clientId
+	 *            the client id that would like to use the service
+	 * @param redirectURI
+	 *            the redirect uri
+	 * @param scope
+	 *            the authentication scope
+	 */
+	public Oauth2(String OauthURL, String clientId, String redirectURI, String scope) {
+		this(OauthURL, clientId, redirectURI, scope, null);
+	}
 
-    /**
-     * Simple constructor
-     *
-     * @param OauthURL the authentication url of the service
-     * @param clientId the client id that would like to use the service
-     * @param redirectURI the redirect uri
-     * @param scope the authentication scope
-     * @param additionalParams hashtable of additional parameters to the
-     * authentication request
-     */
-    public Oauth2(String OauthURL, String clientId, String redirectURI, String scope, Hashtable additionalParams) {
-        this.OauthURL = OauthURL;
-        this.redirectURI = redirectURI;
-        this.clientId = clientId;
-        this.scope = scope;
-        this.additionalParams = additionalParams;
-    }
+	/**
+	 * Simple constructor
+	 * 
+	 * @param OauthURL
+	 *            the authentication url of the service
+	 * @param clientId
+	 *            the client id that would like to use the service
+	 * @param redirectURI
+	 *            the redirect uri
+	 * @param scope
+	 *            the authentication scope
+	 * @param additionalParams
+	 *            hashtable of additional parameters to the authentication
+	 *            request
+	 */
+	public Oauth2(String OauthURL, String clientId, String redirectURI, String scope, Hashtable additionalParams) {
+		this.OauthURL = OauthURL;
+		this.redirectURI = redirectURI;
+		this.clientId = clientId;
+		this.scope = scope;
+		this.additionalParams = additionalParams;
+	}
 
-    /**
-     * This method preforms the actual authentication, this method is a blocking
-     * method that will display the user the html authentication pages.
-     *
-     * @return the method if passes authentication will return the access token
-     * or null if authentication failed.
-     *
-     * @throws IOException the method will throw an IOException if something went
-     * wrong in the communication.
-     */
-    public String authenticate() throws IOException{
+	/**
+	 * This method preforms the actual authentication, this method is a blocking
+	 * method that will display the user the html authentication pages.
+	 * 
+	 * @return the method if passes authentication will return the access token
+	 *         or null if authentication failed.
+	 * 
+	 * @throws IOException
+	 *             the method will throw an IOException if something went wrong
+	 *             in the communication.
+	 */
+	public String authenticate() throws IOException {
 
-        if (token == null) {
-            final Form current = Display.getInstance().getCurrent();
-            final boolean[] loginFlag = new boolean[1];
-            error = null;
+		if (token == null) {
+			final Form current = Display.getInstance().getCurrent();
+			final boolean[] loginFlag = new boolean[1];
+			error = null;
 
-            Form login = new Form();
-            login.setLayout(new BorderLayout());
-            login.setScrollable(false);
-            Component html = createLoginComponent(new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    loginFlag[0] = true;
-                }
-            });
-            login.addComponent(BorderLayout.CENTER, html);
-            login.show();
-            Display.getInstance().invokeAndBlock(new Runnable() {
+			Form login = new Form();
+			login.setLayout(new BorderLayout());
+			login.setScrollable(false);
+			Component html = createLoginComponent(new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					loginFlag[0] = true;
+				}
+			});
+			login.addComponent(BorderLayout.CENTER, html);
+			login.show();
+			Display.getInstance().invokeAndBlock(new Runnable() {
 
-                public void run() {
-                    while (!loginFlag[0]) {
-                        try {
-                            Thread.sleep(50);
-                        } catch (InterruptedException ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-                    if (current != null) {
-                        current.show();
-                    }
-                }
-            });
-            if(error != null){
-                throw error;
-            }
-        }
+				public void run() {
+					while (!loginFlag[0]) {
+						try {
+							Thread.sleep(50);
+						} catch (InterruptedException ex) {
+							ex.printStackTrace();
+						}
+					}
+					if (current != null) {
+						current.show();
+					}
+				}
+			});
+			if (error != null) {
+				throw error;
+			}
+		}
 
-        return token;
-    }
+		return token;
+	}
 
-    private Component createLoginComponent(final ActionListener loginCallback) {
+	private Component createLoginComponent(final ActionListener loginCallback) {
 
-        String URL = OauthURL + "?client_id=" + clientId
-                + "&redirect_uri=" + Util.encodeUrl(redirectURI) + "&scope=" + scope + "&response_type=token";
+		String URL = OauthURL + "?client_id=" + clientId
+				+ "&redirect_uri=" + Util.encodeUrl(redirectURI) + "&scope=" + scope + "&response_type=token";
 
-        if (additionalParams != null) {
-            Enumeration e = additionalParams.keys();
-            while(e.hasMoreElements()){
-                String key = (String) e.nextElement();
-                String val = additionalParams.get(key).toString();
-                URL += "&" + key + "=" + val;
-            }
-        }
+		if (additionalParams != null) {
+			Enumeration e = additionalParams.keys();
+			while (e.hasMoreElements()) {
+				String key = (String) e.nextElement();
+				String val = additionalParams.get(key).toString();
+				URL += "&" + key + "=" + val;
+			}
+		}
 
-        HTMLComponent c = new HTMLComponent(new AsyncDocumentRequestHandlerImpl() {
+		HTMLComponent c = new HTMLComponent(new AsyncDocumentRequestHandlerImpl() {
 
-            protected ConnectionRequest createConnectionRequest(final DocumentInfo docInfo, final IOCallback callback, final Object[] response) {
-                return new ConnectionRequest() {
+			protected ConnectionRequest createConnectionRequest(final DocumentInfo docInfo, final IOCallback callback, final Object[] response) {
+				return new ConnectionRequest() {
 
-                    protected void buildRequestBody(OutputStream os) throws IOException {
-                        if (isPost()) {
-                            if (docInfo.getParams() != null) {
-                                OutputStreamWriter w = new OutputStreamWriter(os, docInfo.getEncoding());
-                                w.write(docInfo.getParams());
-                            }
-                        }
-                    }
+					protected void buildRequestBody(OutputStream os) throws IOException {
+						if (isPost()) {
+							if (docInfo.getParams() != null) {
+								OutputStreamWriter w = new OutputStreamWriter(os, docInfo.getEncoding());
+								w.write(docInfo.getParams());
+							}
+						}
+					}
 
-                    protected void handleIOException(IOException err) {
-                        if (callback == null) {
-                            response[0] = err;
-                        }
-                        error = err;
-                        loginCallback.actionPerformed(null);
-                    }
+					protected void handleIOException(IOException err) {
+						if (callback == null) {
+							response[0] = err;
+						}
+						error = err;
+						loginCallback.actionPerformed(null);
+					}
 
-                    protected boolean shouldAutoCloseResponse() {
-                        return callback != null;
-                    }
+					protected boolean shouldAutoCloseResponse() {
+						return callback != null;
+					}
 
-                    protected void readResponse(InputStream input) throws IOException {
-                        BufferedInputStream i;
-                        if (input instanceof BufferedInputStream) {
-                            i = (BufferedInputStream) input;
-                        } else {
-                            i = new BufferedInputStream(input);
-                        }
-                        i.setYield(-1);
-                        if (callback != null) {
-                            callback.streamReady(input, docInfo);
-                        } else {
-                            response[0] = input;
-                            synchronized (LOCK) {
-                                LOCK.notify();
-                            }
-                        }
-                    }
+					protected void readResponse(InputStream input) throws IOException {
+						BufferedInputStream i;
+						if (input instanceof BufferedInputStream) {
+							i = (BufferedInputStream) input;
+						} else {
+							i = new BufferedInputStream(input);
+						}
+						i.setYield(-1);
+						if (callback != null) {
+							callback.streamReady(input, docInfo);
+						} else {
+							response[0] = input;
+							synchronized (LOCK) {
+								LOCK.notify();
+							}
+						}
+					}
 
-                    public boolean onRedirect(String url) {
-                        if ((url.startsWith(redirectURI))){
-                            boolean success = url.indexOf("#") > -1;
-                            if(success){
-                                String accessToken = url.substring(url.indexOf("#") + 1);
-                                token = accessToken.substring(accessToken.indexOf("=") + 1, accessToken.indexOf("&"));
-                            }
-                            loginCallback.actionPerformed(null);
-                            return true;
-                        }
-                        return false;
-                    }
-                };
-            }
-        });
+					public boolean onRedirect(String url) {
+						if ((url.startsWith(redirectURI))) {
+							boolean success = url.indexOf("#") > -1;
+							if (success) {
+								String accessToken = url.substring(url.indexOf("#") + 1);
+								token = accessToken.substring(accessToken.indexOf("=") + 1, accessToken.indexOf("&"));
+							}
+							loginCallback.actionPerformed(null);
+							return true;
+						}
+						return false;
+					}
+				};
+			}
+		});
 
-        c.setPage(URL);
-        c.getDocumentInfo().setPostRequest(true);
-        c.setIgnoreCSS(true);
-        c.getDocumentInfo().setEncoding("UTF-8");
-        return c;
-    }
-    
+		c.setPage(URL);
+		c.getDocumentInfo().setPostRequest(true);
+		c.setIgnoreCSS(true);
+		c.getDocumentInfo().setEncoding("UTF-8");
+		return c;
+	}
+
 }
