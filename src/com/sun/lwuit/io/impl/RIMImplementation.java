@@ -138,7 +138,7 @@ public class RIMImplementation extends MIDPImpl {
 //		deviceSide = t == NetworkManager.ACCESS_POINT_TYPE_NETWORK3G || t == NetworkManager.ACCESS_POINT_TYPE_WLAN;
 	}
 
-	private Connection httpConnect(String url, boolean read, boolean write) {
+	private Connection httpConnect(String url, boolean read, boolean write) throws IOException {
 		// Preferred transports, in order of preference
 		// (based on GPRS consumer preferences)
 		final int[] transports = {
@@ -189,7 +189,11 @@ public class RIMImplementation extends MIDPImpl {
 		factory.setConnectionMode(connectionMode);
 
 		final ConnectionDescriptor cd = factory.getConnection(url);
-		return cd != null ? cd.getConnection() : null;
+		if (cd != null) {
+			return cd.getConnection();
+		} else {
+			throw new IOException();
+		}
 	}
 
 	/**
