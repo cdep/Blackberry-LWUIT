@@ -358,14 +358,14 @@ public class ComboBox extends List {
         List l = new List(getModel());
         l.setSmoothScrolling(isSmoothScrolling());
         l.setFixedSelection(getFixedSelection());
-        l.setListCellRenderer(getRenderer());
+        l.setRenderer(getRenderer());
         l.setItemGap(getItemGap());
         l.setUIID("ComboBoxList");
         if(UIManager.getInstance().isThemeConstant("otherPopupRendererBool", false)) {
             DefaultListCellRenderer renderer = new DefaultListCellRenderer();
             renderer.setUIID("PopupItem");
             renderer.getListFocusComponent(l).setUIID("PopupFocus");
-            l.setListCellRenderer(renderer);
+            l.setRenderer(renderer);
         }
 
         return l;

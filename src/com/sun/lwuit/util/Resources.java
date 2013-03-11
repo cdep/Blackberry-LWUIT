@@ -1249,7 +1249,7 @@ public class Resources {
         switch(type) {
             // empty border
             case 0xff01:
-                return Border.getEmpty();
+                return Border.createEmpty();
 
             // Line border
             case 0xff02:
@@ -1325,7 +1325,7 @@ public class Resources {
         int type = input.readByte();
         switch(type) {
             case BORDER_TYPE_EMPTY:
-                return Border.getEmpty();
+                return Border.createEmpty();
             case BORDER_TYPE_LINE:
                 // use theme colors?
                 if(input.readBoolean()) {

@@ -670,7 +670,7 @@ public class MenuBar extends Container implements ActionListener {
         //calling directly to createCommandComponent
         ((Form) d).getMenuBar().commandList = createCommandComponent(commands);
         if (menuCellRenderer != null && ((Form) d).getMenuBar().commandList instanceof List) {
-            ((List) ((Form) d).getMenuBar().commandList).setListCellRenderer(menuCellRenderer);
+            ((List) ((Form) d).getMenuBar().commandList).setRenderer(menuCellRenderer);
         }
         d.getContentPane().getStyle().setMargin(0, 0, 0, 0);
         d.addComponent(BorderLayout.CENTER, ((Form) d).getMenuBar().commandList);
@@ -1260,7 +1260,7 @@ public class MenuBar extends Container implements ActionListener {
         }
         if (menuCellRenderer != null) {
             List tmp = new List();
-            tmp.setListCellRenderer(menuCellRenderer);
+            tmp.setRenderer(menuCellRenderer);
             tmp.refreshTheme();
         }
         for (int iter = 0; iter < soft.length; iter++) {
