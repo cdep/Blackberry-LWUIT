@@ -62,8 +62,6 @@ public class Dialog extends Form {
 	 * setting this to true will cause the dialog title to behave as it did in
 	 * LWUIT 1.4
 	 * 
-	 * @deprecated this method will be removed and the functionality will be
-	 *             removed in the next version of LWUIT
 	 * @return the dialogTitleCompatibilityMode
 	 */
 	public static boolean isDialogTitleCompatibilityMode() {
