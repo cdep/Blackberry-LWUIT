@@ -51,7 +51,7 @@ public class RIMImplementation extends MIDPImpl implements CoverageStatusListene
 	private int timeout = 60 * 1000; // 60-second timeout
 	private int[] transports;
 
-	public RIMImplementation() {
+	protected RIMImplementation() {
 		updateTransports();
 		TransportInfo.addListener(this);
 	}
