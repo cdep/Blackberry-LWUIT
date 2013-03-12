@@ -32,7 +32,6 @@ import javax.microedition.io.Connection;
 import net.rim.device.api.io.transport.ConnectionDescriptor;
 import net.rim.device.api.io.transport.ConnectionFactory;
 import net.rim.device.api.io.transport.TransportInfo;
-import net.rim.device.api.io.transport.options.TcpCellularOptions;
 import net.rim.device.api.servicebook.ServiceBook;
 import net.rim.device.api.servicebook.ServiceRecord;
 import net.rim.device.api.util.Arrays;
@@ -48,7 +47,7 @@ import com.sun.lwuit.io.NetworkManager;
 public class RIMImplementation extends MIDPImpl {
 
 	private String currentAccessPoint;
-	private int timeout = 60;
+	private int timeout = 60 * 1000; // 60-second timeout
 
 	/**
 	 * @inheritDoc
@@ -122,10 +121,7 @@ public class RIMImplementation extends MIDPImpl {
 	 * @inheritDoc
 	 */
 	public String getCurrentAccessPoint() {
-		if (currentAccessPoint != null) {
-			return currentAccessPoint;
-		}
-		return null;
+		return currentAccessPoint;
 	}
 
 	/**
@@ -133,8 +129,6 @@ public class RIMImplementation extends MIDPImpl {
 	 */
 	public void setCurrentAccessPoint(String id) {
 		currentAccessPoint = id;
-//		int t = getAPType(id);
-//		deviceSide = t == NetworkManager.ACCESS_POINT_TYPE_NETWORK3G || t == NetworkManager.ACCESS_POINT_TYPE_WLAN;
 	}
 
 	private Connection httpConnect(String url, boolean read, boolean write) throws IOException {
@@ -152,7 +146,6 @@ public class RIMImplementation extends MIDPImpl {
 		for (int i = 0; i < transports.length;) {
 			int transport = transports[i];
 			if (!TransportInfo.isTransportTypeAvailable(transport) || !TransportInfo.hasSufficientCoverage(transport)) {
-				System.out.println("XXX remove transport: " + TransportInfo.getTransportTypeName(transport));
 				Arrays.removeAt(transports, i);
 			} else {
 				System.out.println("XXX valid transport: " + TransportInfo.getTransportTypeName(transport));
@@ -160,24 +153,11 @@ public class RIMImplementation extends MIDPImpl {
 			}
 		}
 
-		// Set options for TCP Cellular transport.
-		final TcpCellularOptions tcpOptions = new TcpCellularOptions();
-		if (!TcpCellularOptions.isDefaultAPNSet()) {
-			// TODO
-			tcpOptions.setApn("My APN");
-			tcpOptions.setTunnelAuthUsername("user");
-			tcpOptions.setTunnelAuthPassword("password");
-		}
-
 		final ConnectionFactory factory = new ConnectionFactory();
-
 		// Set ConnectionFactory options
 		if (transports.length > 0) {
-			System.out.println("XXX set preferred transports");
 			factory.setPreferredTransportTypes(transports);
 		}
-		factory.setTransportTypeOptions(TransportInfo.TRANSPORT_TCP_CELLULAR, tcpOptions);
-		factory.setAttemptsLimit(3);
 		factory.setTimeoutSupported(true);
 		factory.setConnectionTimeout(timeout);
 		factory.setEndToEndDesired(url.startsWith("https"));
