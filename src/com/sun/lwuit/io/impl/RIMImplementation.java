@@ -48,7 +48,6 @@ import com.sun.lwuit.io.NetworkManager;
 public class RIMImplementation extends MIDPImpl {
 
 	private String currentAccessPoint;
-//	private boolean deviceSide;
 	private int timeout = 60;
 
 	/**
@@ -150,13 +149,14 @@ public class RIMImplementation extends MIDPImpl {
 		};
 
 		// Remove any transports that are not currently available.
-		for (int i = 0; i < transports.length; i++) {
+		for (int i = 0; i < transports.length;) {
 			int transport = transports[i];
 			if (!TransportInfo.isTransportTypeAvailable(transport) || !TransportInfo.hasSufficientCoverage(transport)) {
 				System.out.println("XXX remove transport: " + TransportInfo.getTransportTypeName(transport));
 				Arrays.removeAt(transports, i);
 			} else {
 				System.out.println("XXX valid transport: " + TransportInfo.getTransportTypeName(transport));
+				i++;
 			}
 		}
 
