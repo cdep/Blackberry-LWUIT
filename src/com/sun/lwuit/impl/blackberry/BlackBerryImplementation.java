@@ -649,11 +649,11 @@ public class BlackBerryImplementation extends LWUITImplementation {
 		}
 
 		public int getMediaDuration() {
-			return (int) (((Player) getNativePeer()).getDuration() / 1000);
+			return ((int) p.getDuration() / 1000);
 		}
 
 		public boolean isPlaying() {
-			return ((Player) getNativePeer()).getState() == Player.STARTED;
+			return p.getState() == Player.STARTED;
 		}
 
 		public void setVisible(boolean b) {
@@ -681,10 +681,12 @@ public class BlackBerryImplementation extends LWUITImplementation {
 		}
 
 		protected void deinitialize() {
+			System.out.println("YYY Deinitialising VideoComponent");
 			canvas.eventTarget = null;
 			InvokeLaterWrapper i = new InvokeLaterWrapper(INVOKE_LATER_deinitialize);
 			i.fld = (Field) getNativePeer();
 			app.invokeLater(i);
+			System.out.println("YYY VideoComponent Deinitialised");
 		}
 
 		/**
@@ -1609,11 +1611,26 @@ public class BlackBerryImplementation extends LWUITImplementation {
 				break;
 
 			case INVOKE_LATER_initComponent:
-				canvas.add(fld);
+				try {
+					canvas.add(fld);
+				} catch (Throwable t) {
+					t.printStackTrace();
+				}
 				break;
 
 			case INVOKE_LATER_deinitialize:
-				canvas.delete(fld);
+				try {
+					System.out.println("YYY deleting component " + fld + "from canvas; hasManager: " + (fld.getManager() != null));
+					if (fld.getManager() != null) {
+						canvas.delete(fld);
+						System.out.println("YYY component deleted");
+					} else {
+						System.out.println("YYY component was already deleted");
+					}
+				} catch (Throwable t) {
+					System.out.println("YYY Something went wrong while deinitialising: " + t.getMessage());
+					t.printStackTrace();
+				}
 				break;
 
 			case INVOKE_LATER_showNativeScreen:
