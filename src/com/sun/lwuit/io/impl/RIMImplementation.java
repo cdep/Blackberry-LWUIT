@@ -27,8 +27,6 @@ package com.sun.lwuit.io.impl;
 import java.io.IOException;
 import java.util.Vector;
 
-import javax.microedition.io.Connection;
-
 import net.rim.device.api.io.transport.ConnectionDescriptor;
 import net.rim.device.api.io.transport.ConnectionFactory;
 import net.rim.device.api.io.transport.TransportInfo;
@@ -44,6 +42,8 @@ import com.sun.lwuit.io.NetworkManager;
  * @author Shai Almog
  */
 public class RIMImplementation extends MIDPImpl {
+
+	private static final boolean TIMEOUT_SUPPORTED = true;
 
 	private String currentAccessPoint;
 	private int timeout = 60 * 1000; // 60-second timeout
@@ -130,7 +130,10 @@ public class RIMImplementation extends MIDPImpl {
 		currentAccessPoint = id;
 	}
 
-	private Connection httpConnect(String url, boolean read, boolean write) throws IOException {
+	/**
+	 * @inheritDoc
+	 */
+	public Object connect(String url, boolean read, boolean write) throws IOException {
 		final ConnectionFactory factory = new ConnectionFactory();
 		// Preferred transports, in order of preference
 		// (based on GPRS consumer preferences)
@@ -142,8 +145,11 @@ public class RIMImplementation extends MIDPImpl {
 			TransportInfo.TRANSPORT_TCP_CELLULAR
 		};
 		factory.setPreferredTransportTypes(transports);
-		factory.setTimeoutSupported(true);
+		// Config timeouts
+		factory.setTimeoutSupported(TIMEOUT_SUPPORTED);
 		factory.setConnectionTimeout(timeout);
+		factory.setTimeLimit(timeout);
+		// Right now connect() is used for HTTP/HTTPS connections only
 		factory.setEndToEndDesired(url.startsWith("https"));
 
 		int connectionMode = ConnectionFactory.ACCESS_READ;
@@ -163,18 +169,8 @@ public class RIMImplementation extends MIDPImpl {
 	/**
 	 * @inheritDoc
 	 */
-	public Object connect(String url, boolean read, boolean write) throws IOException {
-		if (url.startsWith("http")) {
-			return httpConnect(url, read, write);
-		}
-		return super.connect(url, read, write);
-	}
-
-	/**
-	 * @inheritDoc
-	 */
 	public boolean isTimeoutSupported() {
-		return true;
+		return TIMEOUT_SUPPORTED;
 	}
 
 	/**
