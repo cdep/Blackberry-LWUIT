@@ -31,11 +31,9 @@ import javax.microedition.io.Connection;
 
 import net.rim.device.api.io.transport.ConnectionDescriptor;
 import net.rim.device.api.io.transport.ConnectionFactory;
-import net.rim.device.api.io.transport.CoverageStatusListener;
 import net.rim.device.api.io.transport.TransportInfo;
 import net.rim.device.api.servicebook.ServiceBook;
 import net.rim.device.api.servicebook.ServiceRecord;
-import net.rim.device.api.util.Arrays;
 
 import com.sun.lwuit.io.NetworkManager;
 
@@ -45,43 +43,10 @@ import com.sun.lwuit.io.NetworkManager;
  * 
  * @author Shai Almog
  */
-public class RIMImplementation extends MIDPImpl implements CoverageStatusListener {
+public class RIMImplementation extends MIDPImpl {
 
 	private String currentAccessPoint;
 	private int timeout = 60 * 1000; // 60-second timeout
-	private int[] transports;
-
-	protected RIMImplementation() {
-		updateTransports();
-		TransportInfo.addListener(this);
-	}
-
-	private void updateTransports() {
-		// Preferred transports, in order of preference
-		// (based on GPRS consumer preferences)
-		final int[] transports = {
-			TransportInfo.TRANSPORT_TCP_WIFI,
-			TransportInfo.TRANSPORT_BIS_B,
-			TransportInfo.TRANSPORT_WAP2,
-			TransportInfo.TRANSPORT_MDS,
-			TransportInfo.TRANSPORT_TCP_CELLULAR
-		};
-		// Remove any transports that are not currently available.
-		for (int i = 0; i < transports.length;) {
-			final int transport = transports[i];
-			if (!TransportInfo.isTransportTypeAvailable(transport) || !TransportInfo.hasSufficientCoverage(transport)) {
-				Arrays.removeAt(transports, i);
-			} else {
-				System.out.println("XXX valid transport: " + TransportInfo.getTransportTypeName(transport));
-				i++;
-			}
-		}
-		this.transports = transports;
-	}
-
-	public void coverageStatusChanged(int[] transportsInCoverage) {
-		updateTransports();
-	}
 
 	/**
 	 * @inheritDoc
@@ -167,10 +132,16 @@ public class RIMImplementation extends MIDPImpl implements CoverageStatusListene
 
 	private Connection httpConnect(String url, boolean read, boolean write) throws IOException {
 		final ConnectionFactory factory = new ConnectionFactory();
-		// Set ConnectionFactory options
-		if (transports.length > 0) {
-			factory.setPreferredTransportTypes(transports);
-		}
+		// Preferred transports, in order of preference
+		// (based on GPRS consumer preferences)
+		final int[] transports = {
+			TransportInfo.TRANSPORT_TCP_WIFI,
+			TransportInfo.TRANSPORT_BIS_B,
+			TransportInfo.TRANSPORT_WAP2,
+			TransportInfo.TRANSPORT_MDS,
+			TransportInfo.TRANSPORT_TCP_CELLULAR
+		};
+		factory.setPreferredTransportTypes(transports);
 		factory.setTimeoutSupported(true);
 		factory.setConnectionTimeout(timeout);
 		factory.setEndToEndDesired(url.startsWith("https"));
