@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="LWUIT_RIM">
 
-    <property name="project.name" value="LWUIT_RIM" />
     <property name="source.dir" value="src" />
     <property name="bin.dir" value="bin" />
     <property file="local.properties" />
@@ -11,13 +10,13 @@
 
     <target name="build">
         <mkdir dir="${bin.dir}" />
-        <rapc srcdir="${source.dir}" jdehome="${jde.home}" output="${project.name}" destdir="${bin.dir}">
+        <rapc srcdir="${source.dir}" jdehome="${jde.home}" output="${ant.project.name}" destdir="${bin.dir}">
             <jdp type="library" />
         </rapc>
     </target>
 
     <target name="sign" depends="build">
-        <sigtool codfile="${bin.dir}/${project.name}.cod" password="${sigtool.password}" />
+        <sigtool codfile="${bin.dir}/${ant.project.name}.cod" password="${sigtool.password}" />
     </target>
 
     <target name="clean">
