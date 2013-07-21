@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="LWUIT_RIM">
+
+    <property name="project.name" value="LWUIT_RIM" />
+    <property name="source.dir" value="src" />
+    <property name="bin.dir" value="bin" />
+    <property file="local.properties" />
+
+    <path id="bb-ant-tools.classpath" path="${bb-ant-tools.dir}/bb-ant-tools.jar" />
+    <typedef resource="bb-ant-defs.xml" classpathref="bb-ant-tools.classpath" />
+
+    <target name="build">
+        <mkdir dir="${bin.dir}" />
+        <rapc srcdir="${source.dir}" jdehome="${jde.home}" output="${project.name}" destdir="${bin.dir}">
+            <jdp type="library" />
+        </rapc>
+    </target>
+
+    <target name="sign" depends="build">
+        <sigtool codfile="${bin.dir}/${project.name}.cod" password="${sigtool.password}" />
+    </target>
+
+    <target name="clean">
+        <delete dir="${bin.dir}" />
+    </target>
+
+</project>
