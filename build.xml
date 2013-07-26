@@ -5,7 +5,7 @@
     <property name="bin.dir" value="bin" />
     <property file="local.properties" />
 
-    <path id="bb-ant-tools.classpath" path="${bb-ant-tools.dir}/bb-ant-tools.jar" />
+    <path id="bb-ant-tools.classpath" path="${bb-ant-tools.jar}" />
     <typedef resource="bb-ant-defs.xml" classpathref="bb-ant-tools.classpath" />
 
     <target name="build">
